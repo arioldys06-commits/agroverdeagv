@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGROVERDE AGV - Agricultura con Propósito</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-dark:#1a4a1a; --green-main:#2d7a2d; --green-light:#4caf50;
+    --green-pale:#e8f5e9; --gold:#c8a84b; --white:#ffffff; --gray-light:#f5f5f5;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{font-family:"Lato",sans-serif;color:#1a2e1a;background:var(--white);}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(26,74,26,0.96);
+    backdrop-filter:blur(10px);padding:0 40px;display:flex;align-items:center;
+    justify-content:space-between;height:70px;border-bottom:2px solid var(--gold);}
+  .nav-logo{height:56px;width:auto;object-fit:contain;}
+  nav ul{list-style:none;display:flex;gap:28px;}
+  nav ul a{color:#fff;text-decoration:none;font-weight:700;font-size:12px;
+    letter-spacing:2px;text-transform:uppercase;transition:color 0.3s;}
+  nav ul a:hover{color:var(--gold);}
+
+  .hero{position:relative;height:100vh;min-height:600px;
+    display:flex;align-items:center;justify-content:center;overflow:hidden;}
+  .hero-bg{position:absolute;inset:0;
+    background-image:url("banner.jpg");
+    background-size:cover;background-position:center;
+    animation:slowZoom 20s ease-in-out infinite alternate;}
+  @keyframes slowZoom{from{transform:scale(1.0)}to{transform:scale(1.08)}}
+  .hero-overlay{position:absolute;inset:0;
+    background:linear-gradient(135deg,rgba(26,74,26,0.65) 0%,rgba(0,0,0,0.15) 100%);}
+  .hero-content{position:relative;z-index:2;text-align:center;color:white;animation:fadeUp 1.2s ease forwards;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+  .hero-content h1{font-family:"Playfair Display",serif;font-size:clamp(2.5rem,6vw,5rem);
+    font-weight:900;line-height:1.1;text-shadow:2px 4px 20px rgba(0,0,0,0.5);margin-bottom:16px;}
+  .hero-content h1 span{color:var(--gold);}
+  .hero-content p{font-size:clamp(1rem,2vw,1.3rem);font-weight:300;letter-spacing:3px;
+    text-transform:uppercase;opacity:0.9;margin-bottom:40px;text-shadow:1px 2px 10px rgba(0,0,0,0.4);}
+  .hero-btn{display:inline-block;padding:16px 48px;background:var(--gold);color:var(--green-dark);
+    font-weight:700;font-size:13px;letter-spacing:3px;text-transform:uppercase;
+    text-decoration:none;transition:all 0.3s;
+    clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);}
+  .hero-btn:hover{background:white;transform:translateY(-2px);}
+  .scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+    z-index:2;animation:bounce 2s infinite;color:white;font-size:28px;opacity:0.7;}
+  @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(10px)}}
+
+  section{padding:100px 40px;}
+  .section-label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--green-light);font-weight:700;margin-bottom:12px;}
+  .section-title{font-family:"Playfair Display",serif;font-size:clamp(2rem,4vw,3rem);color:var(--green-dark);line-height:1.2;margin-bottom:24px;}
+  .section-divider{width:60px;height:3px;background:linear-gradient(90deg,var(--gold),var(--green-light));margin-bottom:32px;}
+
+  .nosotros-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+  .nosotros-grid p{font-size:1.05rem;line-height:1.9;color:#444;margin-bottom:16px;}
+  .nosotros-img-wrap img{width:100%;border-radius:8px;box-shadow:0 20px 50px rgba(0,0,0,0.15);}
+
+  #gustamos{background:var(--green-dark);}
+  #gustamos .inner{max-width:900px;margin:0 auto;}
+  #gustamos .section-title{color:white;}
+  #gustamos .section-label{color:var(--gold);}
+
+  #galeria{background:var(--gray-light);}
+  #galeria .inner{max-width:1000px;margin:0 auto;}
+  .slideshow-wrap{position:relative;margin-top:40px;border-radius:8px;overflow:hidden;
+    box-shadow:0 10px 40px rgba(0,0,0,0.2);background:#111;}
+  .slides{display:flex;transition:transform 0.6s ease;}
+  .slide{min-width:100%;display:flex;align-items:center;justify-content:center;}
+  .slide img{width:100%;max-height:500px;object-fit:contain;display:block;}
+  .slide-btn{position:absolute;top:50%;transform:translateY(-50%);
+    background:rgba(26,74,26,0.8);color:white;border:none;
+    width:48px;height:48px;border-radius:50%;font-size:22px;cursor:pointer;transition:background 0.3s;z-index:10;}
+  .slide-btn:hover{background:var(--green-dark);}
+  .slide-btn.prev{left:12px;} .slide-btn.next{right:12px;}
+  .slide-dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:8px;}
+  .dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.45);cursor:pointer;transition:background 0.3s;}
+  .dot.active{background:var(--gold);}
+
+  #video{background:var(--green-dark);}
+  #video .inner{max-width:750px;margin:0 auto;text-align:center;}
+  #video .section-title{color:white;} #video .section-label{color:var(--gold);}
+  #video .section-divider{background:linear-gradient(90deg,#c8a84b,#4caf50);margin:0 auto 40px;}
+  .video-container{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,0.5);}
+  .video-container iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}
+
+  #redes{background:white;}
+  #redes .inner{max-width:900px;margin:0 auto;text-align:center;}
+  .social-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:40px;}
+  .social-btn{display:flex;align-items:center;gap:12px;padding:16px 32px;
+    border:2px solid var(--green-main);color:var(--green-dark);text-decoration:none;
+    font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;transition:all 0.3s;}
+  .social-btn:hover{background:var(--green-dark);color:white;}
+  .social-btn.whatsapp{border-color:#25d366;color:#128c7e;}
+  .social-btn.whatsapp:hover{background:#25d366;color:white;border-color:#25d366;}
+  .map-wrap{margin-top:48px;border-radius:8px;overflow:hidden;
+    box-shadow:0 10px 40px rgba(0,0,0,0.12);border:3px solid var(--green-pale);}
+  .map-wrap iframe{display:block;width:100%;height:380px;border:0;}
+
+  footer{background:var(--green-dark);color:white;text-align:center;padding:48px 40px;border-top:3px solid var(--gold);}
+  .footer-logo{height:60px;width:auto;object-fit:contain;margin-bottom:20px;}
+  footer p{font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:0.6;margin-top:8px;}
+
+  @media(max-width:768px){
+    nav{padding:0 16px;} nav ul{gap:10px;} nav ul a{font-size:10px;letter-spacing:1px;}
+    .nav-logo{height:44px;} .nosotros-grid{grid-template-columns:1fr;gap:40px;}
+    section{padding:60px 20px;} .social-links{flex-direction:column;align-items:center;}
+    .slide img{max-height:280px;} .map-wrap iframe{height:260px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <img class="nav-logo" src="logo.png" alt="AGROVERDE AGV">
+  <ul>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#gustamos">Qué hacemos</a></li>
+    <li><a href="#galeria">Galería</a></li>
+    <li><a href="#video">Comercial</a></li>
+    <li><a href="#redes">Contacto</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div><div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1>Agricultura con<br><span>Propósito</span></h1>
+    <p>AGROVERDE AGV SRL &nbsp;·&nbsp; República Dominicana</p>
+    <a href="#nosotros" class="hero-btn">Conócenos</a>
+  </div>
+  <div class="scroll-indicator">↓</div>
+</section>
+
+<section id="nosotros" style="background:white;">
+  <div class="nosotros-grid">
+    <div>
+      <p class="section-label">Quiénes somos</p>
+      <h2 class="section-title">Comprometidos con<br>el productor arrocero</h2>
+      <div class="section-divider"></div>
+      <p style="font-size:1.1rem;font-family:'Playfair Display',serif;color:var(--green-main);font-style:italic;margin-bottom:20px;">Comprometidos con el productor arrocero dominicano</p>
+      <p>Agroverde/agvsrl es una empresa enfocada en brindar soluciones al sector arrocero dominicano, trabajando de la mano con productores, clientes y aliados del campo.</p>
+      <p>Nos dedicamos a la compra de arroz, carga, logística y transporte agrícola, ofreciendo un servicio responsable, directo y confiable. Nuestro compromiso es acompañar cada proceso con seriedad, desde el campo hasta la entrega final.</p>
+      <p>En Agroverde valoramos el esfuerzo del productor, porque sabemos que detrás de cada cosecha hay trabajo, sacrificio y esperanza.</p>
+      <p style="color:var(--green-main);font-weight:700;margin-top:8px;">Agroverde/agvsrl: tu socio en finanzas y arroz.</p>
+    </div>
+    <div class="nosotros-img-wrap">
+      <img src="g1.jpg" alt="Campo AGROVERDE">
+    </div>
+  </div>
+</section>
+
+<section id="gustamos">
+  <div class="inner">
+    <p class="section-label">Nuestra pasión</p>
+    <h2 class="section-title">Qué nos gusta hacer</h2>
+    <div class="section-divider" style="background:linear-gradient(90deg,#c8a84b,#4caf50);"></div>
+    <div style="max-width:800px;margin-top:32px;">
+      <p style="color:rgba(255,255,255,0.85);font-size:1.1rem;line-height:2;margin-bottom:24px;">En Agroverde/agvsrl nos gusta trabajar cerca del productor arrocero, escuchar sus necesidades y buscar soluciones que faciliten el proceso de comercialización del arroz.</p>
+      <p style="color:rgba(255,255,255,0.85);font-size:1.1rem;line-height:2;margin-bottom:24px;">Nos motiva servir al campo dominicano con responsabilidad, respeto y compromiso. Cada compra, cada carga y cada transporte representa una oportunidad para seguir fortaleciendo la confianza de nuestros clientes.</p>
+      <p style="color:rgba(255,255,255,0.85);font-size:1.1rem;line-height:2;margin-bottom:24px;">Nos gusta ser parte del crecimiento del sector arrocero, aportando organización, logística y apoyo en cada etapa del camino.</p>
+      <p style="color:var(--gold);font-size:1.2rem;font-family:'Playfair Display',serif;font-style:italic;margin-top:32px;">Agroverde/agvsrl: trabajando con el campo, para el campo.</p>
+    </div>
+  </div>
+</section>
+
+<section id="galeria">
+  <div class="inner">
+    <p class="section-label">Nuestro trabajo</p>
+    <h2 class="section-title">Galería de fotos</h2>
+    <div class="section-divider"></div>
+    <p style="color:#555;font-size:1.05rem;line-height:1.9;margin-bottom:8px;">Campos de arroz, logística, transporte y momentos del proceso agrícola de AGROVERDE.</p>
+    <div class="slideshow-wrap">
+      <div class="slides" id="slides">
+        <div class="slide"><img src="g1.jpg" alt="AGROVERDE"></div>
+        <div class="slide"><img src="g2.jpg" alt="AGROVERDE"></div>
+        <div class="slide"><img src="g3.jpg" alt="AGROVERDE"></div>
+        <div class="slide"><img src="g4.jpg" alt="AGROVERDE"></div>
+        <div class="slide"><img src="g5.jpg" alt="AGROVERDE"></div>
+        <div class="slide"><img src="g6.jpg" alt="AGROVERDE"></div>
+        <div class="slide"><img src="g7.jpg" alt="AGROVERDE"></div>
+        <div class="slide"><img src="g8.jpg" alt="AGROVERDE"></div>
+        <div class="slide"><img src="g9.jpg" alt="AGROVERDE"></div>
+        <div class="slide"><img src="g10.jpg" alt="AGROVERDE"></div>
+        <div class="slide"><img src="g11.jpg" alt="AGROVERDE"></div>
+        <div class="slide"><img src="g12.jpg" alt="AGROVERDE"></div>
+      </div>
+      <button class="slide-btn prev" onclick="changeSlide(-1)">&#8249;</button>
+      <button class="slide-btn next" onclick="changeSlide(1)">&#8250;</button>
+      <div class="slide-dots" id="dots">
+        <div class="dot active" onclick="goToSlide(0)"></div>
+        <div class="dot" onclick="goToSlide(1)"></div>
+        <div class="dot" onclick="goToSlide(2)"></div>
+        <div class="dot" onclick="goToSlide(3)"></div>
+        <div class="dot" onclick="goToSlide(4)"></div>
+        <div class="dot" onclick="goToSlide(5)"></div>
+        <div class="dot" onclick="goToSlide(6)"></div>
+        <div class="dot" onclick="goToSlide(7)"></div>
+        <div class="dot" onclick="goToSlide(8)"></div>
+        <div class="dot" onclick="goToSlide(9)"></div>
+        <div class="dot" onclick="goToSlide(10)"></div>
+        <div class="dot" onclick="goToSlide(11)"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="video">
+  <div class="inner">
+    <p class="section-label">Míranos en acción</p>
+    <h2 class="section-title">Nuestro comercial</h2>
+    <div class="section-divider"></div>
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/4dGYEf3ofaI"
+        title="AGROVERDE AGV Comercial"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<section id="redes">
+  <div class="inner">
+    <p class="section-label">Contáctanos</p>
+    <h2 class="section-title">Nuestras redes sociales</h2>
+    <div class="section-divider" style="margin:0 auto 32px;"></div>
+    <p style="color:#666;font-size:1.05rem;line-height:1.8;">Síguenos en Instagram o escríbenos directamente por WhatsApp.<br>Estamos para servirte.</p>
+    <div class="social-links">
+      <a href="https://instagram.com/Agroverderd" target="_blank" class="social-btn">📸 Instagram &nbsp;@Agroverderd</a>
+      <a href="https://wa.me/18094899215" target="_blank" class="social-btn whatsapp">💬 WhatsApp &nbsp;809-489-9215</a>
+    </div>
+    <div class="map-wrap">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d902.8!2d-69.9106504!3d19.1794671!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eafb3467e36e269%3A0xcbed6bd5f0722cdd!2sagroverde%2FagvSRL!5e0!3m2!1ses!2sdo!4v1"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+    <p style="margin-top:16px;color:#999;font-size:12px;letter-spacing:1px;">📍 Villa Riva, República Dominicana</p>
+  </div>
+</section>
+
+<footer>
+  <img class="footer-logo" src="logo.png" alt="AGROVERDE AGV">
+  <p>© 2026 AGROVERDE AGV SRL</p>
+  <p>Todos los derechos reservados · Villa Riva, República Dominicana</p>
+</footer>
+
+<script>
+let current=0,total=12;
+let autoTimer=setInterval(()=>changeSlide(1),3500);
+function changeSlide(dir){current=(current+dir+total)%total;updateSlider();resetTimer();}
+function goToSlide(n){current=n;updateSlider();resetTimer();}
+function updateSlider(){
+  document.getElementById('slides').style.transform=`translateX(-${current*100}%)`;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===current));
+}
+function resetTimer(){clearInterval(autoTimer);autoTimer=setInterval(()=>changeSlide(1),3500);}
+</script>
+</body>
+</html>
