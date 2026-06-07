@@ -83,9 +83,9 @@ async function sendMessage(){
   chatHistory.push({role:'user', content:text});
   showTyping();
   try {
-    var response = await fetch('https://api.anthropic.com/v1/messages', {
+    var response = await fetch('/api/chat', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json', 'x-api-key': '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', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true'},
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 400,
@@ -607,9 +607,9 @@ async function sendMessage(){
   chatHistory.push({role:'user', content:text});
   showTyping();
   try {
-    var response = await fetch('https://api.anthropic.com/v1/messages', {
+    var response = await fetch('/api/chat', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json', 'x-api-key': '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', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true'},
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 400,
