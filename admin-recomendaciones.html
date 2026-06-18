@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — AGROVERDE AGV</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-dark:#1a4a1a;--green-main:#2d7a2d;--green-light:#4caf50;
+    --green-pale:#e8f5e9;--gold:#c8a84b;--white:#fff;--gray:#f5f5f5;
+    --red:#e53e3e;--border:#ddd;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:"Lato",sans-serif;background:var(--gray);color:#222;min-height:100vh;}
+
+  /* LOGIN */
+  #login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--green-dark);}
+  .login-box{background:white;border-radius:16px;padding:48px 40px;width:100%;max-width:380px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+  .login-logo{height:64px;margin-bottom:24px;}
+  .login-box h2{font-family:"Playfair Display",serif;font-size:1.6rem;color:var(--green-dark);margin-bottom:6px;}
+  .login-box p{color:#888;font-size:13px;margin-bottom:28px;}
+  .login-input{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:8px;font-size:1rem;text-align:center;letter-spacing:4px;margin-bottom:16px;transition:border-color 0.3s;}
+  .login-input:focus{outline:none;border-color:var(--green-main);}
+  .login-btn{width:100%;padding:14px;background:var(--gold);color:var(--green-dark);font-weight:900;font-size:13px;letter-spacing:3px;text-transform:uppercase;border:none;border-radius:8px;cursor:pointer;transition:all 0.3s;}
+  .login-btn:hover{background:var(--green-dark);color:white;}
+  .login-error{color:var(--red);font-size:13px;margin-top:10px;display:none;}
+
+  /* LAYOUT */
+  #admin-screen{display:none;}
+  header{background:var(--green-dark);border-bottom:2px solid var(--gold);padding:0 32px;height:68px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .header-left{display:flex;align-items:center;gap:16px;}
+  .header-logo{height:44px;}
+  .header-title{color:white;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:0.8;}
+  .header-right{display:flex;align-items:center;gap:16px;}
+  .btn-logout{background:none;border:1px solid rgba(255,255,255,0.3);color:white;padding:7px 16px;border-radius:6px;font-size:12px;letter-spacing:1px;cursor:pointer;transition:all 0.3s;}
+  .btn-logout:hover{background:rgba(255,255,255,0.1);}
+  .btn-ver-pub{background:var(--gold);color:var(--green-dark);border:none;padding:7px 16px;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:1px;cursor:pointer;text-decoration:none;transition:all 0.3s;}
+  .btn-ver-pub:hover{background:white;}
+
+  /* TABS */
+  .admin-tabs{background:white;border-bottom:2px solid var(--green-pale);padding:0 32px;display:flex;gap:4px;}
+  .atab{padding:16px 24px;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#999;border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;transition:all 0.3s;}
+  .atab.active{color:var(--green-dark);border-bottom-color:var(--gold);}
+
+  /* CONTENT */
+  .admin-content{padding:32px;max-width:1100px;margin:0 auto;}
+
+  /* PANEL CARDS */
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:gap;}
+  .panel-header h2{font-family:"Playfair Display",serif;font-size:1.6rem;color:var(--green-dark);}
+  .btn-nuevo{background:var(--green-dark);color:white;border:none;padding:12px 24px;border-radius:8px;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:8px;}
+  .btn-nuevo:hover{background:var(--green-main);}
+
+  /* TABLE */
+  .table-wrap{background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.07);}
+  table{width:100%;border-collapse:collapse;}
+  th{background:var(--green-dark);color:white;padding:14px 18px;text-align:left;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;}
+  td{padding:14px 18px;border-bottom:1px solid var(--green-pale);font-size:14px;color:#333;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#fafff9;}
+  .badge-variedad{background:var(--green-pale);color:var(--green-dark);font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px;letter-spacing:1px;}
+  .td-actions{display:flex;gap:8px;}
+  .btn-edit{background:var(--gold);color:var(--green-dark);border:none;padding:6px 14px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.3s;}
+  .btn-edit:hover{background:var(--green-dark);color:white;}
+  .btn-del{background:#fff0f0;color:var(--red);border:1px solid #fca5a5;padding:6px 14px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.3s;}
+  .btn-del:hover{background:var(--red);color:white;}
+  .empty-row td{text-align:center;padding:48px;color:#aaa;font-size:14px;}
+
+  /* MODAL */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;padding:20px;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:white;border-radius:16px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+  .modal-header{padding:24px 28px;border-bottom:2px solid var(--green-pale);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:white;z-index:10;}
+  .modal-header h3{font-family:"Playfair Display",serif;font-size:1.3rem;color:var(--green-dark);}
+  .modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:#999;line-height:1;}
+  .modal-close:hover{color:#333;}
+  .modal-body{padding:28px;}
+  .form-group{margin-bottom:20px;}
+  .form-group label{display:block;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--green-dark);margin-bottom:8px;}
+  .form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:8px;font-family:"Lato",sans-serif;font-size:0.95rem;color:#333;transition:border-color 0.3s;}
+  .form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--green-main);}
+  .form-group textarea{height:100px;resize:vertical;}
+  .form-group small{display:block;margin-top:5px;font-size:11px;color:#999;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .modal-footer{padding:20px 28px;border-top:2px solid var(--green-pale);display:flex;gap:12px;justify-content:flex-end;}
+  .btn-cancel{background:white;border:2px solid var(--border);color:#666;padding:11px 24px;border-radius:8px;font-weight:700;font-size:12px;letter-spacing:1px;cursor:pointer;transition:all 0.3s;}
+  .btn-cancel:hover{border-color:#999;}
+  .btn-save{background:var(--green-dark);color:white;border:none;padding:11px 28px;border-radius:8px;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;}
+  .btn-save:hover{background:var(--green-main);}
+  .btn-save:disabled{opacity:0.5;cursor:not-allowed;}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:32px;right:32px;z-index:500;background:var(--green-dark);color:white;padding:14px 24px;border-radius:10px;font-size:14px;font-weight:700;letter-spacing:1px;box-shadow:0 8px 24px rgba(0,0,0,0.2);transform:translateY(80px);opacity:0;transition:all 0.4s;pointer-events:none;}
+  .toast.show{transform:translateY(0);opacity:1;}
+  .toast.error{background:var(--red);}
+
+  /* IMAGE UPLOAD */
+  .upload-wrap{border:2px dashed var(--border);border-radius:8px;padding:28px;text-align:center;cursor:pointer;transition:all 0.3s;background:#fafafa;}
+  .upload-wrap:hover{border-color:var(--green-main);background:var(--green-pale);}
+  .upload-wrap.dragover{border-color:var(--green-main);background:var(--green-pale);}
+  .upload-icon{font-size:2rem;margin-bottom:8px;}
+  .upload-text{font-weight:700;color:var(--green-dark);font-size:14px;margin-bottom:4px;}
+  .upload-sub{font-size:12px;color:#999;}
+
+  /* IMAGE PREVIEW */
+  .img-preview{margin-top:10px;width:100%;height:140px;object-fit:cover;border-radius:8px;border:2px solid var(--border);display:none;}
+  .img-preview.show{display:block;}
+
+  @media(max-width:768px){
+    header{padding:0 16px;}
+    .admin-content{padding:16px;}
+    .form-row{grid-template-columns:1fr;}
+    .admin-tabs{padding:0 16px;}
+    th,td{padding:10px 12px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <img class="login-logo" src="logo.png" alt="AGROVERDE AGV">
+    <h2>Panel Admin</h2>
+    <p>Ingresa la contraseña para continuar</p>
+    <input type="password" class="login-input" id="pwd-input" placeholder="••••••••••"
+      onkeydown="if(event.key==='Enter')verificarPass()">
+    <button class="login-btn" onclick="verificarPass()">Entrar</button>
+    <p class="login-error" id="login-error">Contraseña incorrecta</p>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-screen">
+  <header>
+    <div class="header-left">
+      <img class="header-logo" src="logo.png" alt="AGROVERDE">
+      <span class="header-title">Panel Administrativo</span>
+    </div>
+    <div class="header-right">
+      <a href="recomendaciones.html" target="_blank" class="btn-ver-pub">Ver página pública →</a>
+      <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <div class="admin-tabs">
+    <button class="atab active" onclick="showPanel('rec')">🌾 Recomendaciones</button>
+    <button class="atab" onclick="showPanel('pat')">⭐ Patrocinadores</button>
+  </div>
+
+  <div class="admin-content">
+
+    <!-- PANEL RECOMENDACIONES -->
+    <div id="panel-rec" class="panel active">
+      <div class="panel-header">
+        <h2>Recomendaciones de Aplicación</h2>
+        <button class="btn-nuevo" onclick="abrirModalRec()">+ Nueva Recomendación</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Variedad</th>
+              <th>Producto</th>
+              <th>Etapa</th>
+              <th>Dosis</th>
+              <th>Momento</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="rec-tbody">
+            <tr class="empty-row"><td colspan="6">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PANEL PATROCINADORES -->
+    <div id="panel-pat" class="panel">
+      <div class="panel-header">
+        <h2>Arroces Patrocinadores</h2>
+        <button class="btn-nuevo" onclick="abrirModalPat()">+ Nuevo Patrocinador</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Tipo</th>
+              <th>Origen</th>
+              <th>Orden</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="pat-tbody">
+            <tr class="empty-row"><td colspan="5">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL RECOMENDACION -->
+<div class="modal-overlay" id="modal-rec">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-rec-title">Nueva Recomendación</h3>
+      <button class="modal-close" onclick="cerrarModal('modal-rec')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="rec-id">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Variedad de Arroz *</label>
+          <select id="rec-variedad">
+            <option value="">Seleccionar...</option>
+            <option>Lucero</option>
+            <option>Guri</option>
+            <option>Jaragua</option>
+            <option>Quisquella</option>
+            <option>Robusta</option>
+            <option>Torazo</option>
+            <option>Otra variedad</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Etapa del cultivo</label>
+          <input type="text" id="rec-etapa" placeholder="Ej: Siembra, Macollamiento...">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Nombre del Producto *</label>
+        <input type="text" id="rec-producto" placeholder="Ej: Urea 46%, Furadan, Roundup...">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Dosis recomendada</label>
+          <input type="text" id="rec-dosis" placeholder="Ej: 2 kg/tarea, 1 L/Ha">
+        </div>
+        <div class="form-group">
+          <label>Momento de aplicación</label>
+          <input type="text" id="rec-momento" placeholder="Ej: 15-20 días después de siembra">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Descripción / Observaciones</label>
+        <textarea id="rec-descripcion" placeholder="Detalles adicionales, precauciones, recomendaciones del equipo..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="cerrarModal('modal-rec')">Cancelar</button>
+      <button class="btn-save" id="btn-save-rec" onclick="guardarRec()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PATROCINADOR -->
+<div class="modal-overlay" id="modal-pat">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-pat-title">Nuevo Patrocinador</h3>
+      <button class="modal-close" onclick="cerrarModal('modal-pat')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="pat-id">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre del Arroz / Marca *</label>
+          <input type="text" id="pat-nombre" placeholder="Ej: El Pilón, Cristal...">
+        </div>
+        <div class="form-group">
+          <label>Tipo</label>
+          <input type="text" id="pat-tipo" placeholder="Ej: Arroz Premium, Largo Fino...">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Origen</label>
+          <input type="text" id="pat-origen" placeholder="Ej: Santiago, RD">
+        </div>
+        <div class="form-group">
+          <label>Orden de aparición</label>
+          <input type="number" id="pat-orden" placeholder="1, 2, 3..." min="1">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Reseña *</label>
+        <textarea id="pat-resena" placeholder="Breve descripción del arroz y por qué AGROVERDE lo recomienda..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Imagen del patrocinador</label>
+        <div class="upload-wrap" id="upload-wrap" onclick="document.getElementById('pat-file').click()">
+          <div class="upload-icon">📁</div>
+          <div class="upload-text">Haz clic para seleccionar imagen</div>
+          <div class="upload-sub">JPG, PNG, WEBP — máx 5MB</div>
+        </div>
+        <input type="file" id="pat-file" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none" onchange="onFileSelect(this)">
+        <input type="hidden" id="pat-imagen">
+        <div id="upload-progress" style="display:none;margin-top:8px;">
+          <div style="height:4px;background:#e5e7eb;border-radius:2px;overflow:hidden;">
+            <div id="progress-bar" style="height:100%;width:0%;background:var(--green-main);transition:width 0.3s;"></div>
+          </div>
+          <small style="color:#666;margin-top:4px;display:block;" id="progress-text">Subiendo...</small>
+        </div>
+        <img class="img-preview" id="img-preview" src="" alt="Vista previa">
+      </div>
+      <div class="form-group">
+        <label>Sitio web (opcional)</label>
+        <input type="text" id="pat-web" placeholder="https://...">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="cerrarModal('modal-pat')">Cancelar</button>
+      <button class="btn-save" id="btn-save-pat" onclick="guardarPat()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const SUPA_URL = "https://qilvrvnwdtpbkcfwktqs.supabase.co";
+const SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpbHZydm53ZHRwYmtjZndrdHFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyMjI3MDcsImV4cCI6MjA5Njc5ODcwN30.kf0jV-496fzXziaPYbsjn5obV6-JUXAXW4hRMDUM6WU";
+const ADMIN_PASS = "8094575114";
+
+const headers = {
+  'apikey': SUPA_KEY,
+  'Authorization': 'Bearer ' + SUPA_KEY,
+  'Content-Type': 'application/json',
+  'Prefer': 'return=representation'
+};
+
+// ── AUTH ──────────────────────────────────────────────────────
+function verificarPass() {
+  const val = document.getElementById('pwd-input').value;
+  if (val === ADMIN_PASS) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    cargarRec();
+    cargarPat();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('pwd-input').value = '';
+    document.getElementById('pwd-input').focus();
+  }
+}
+function logout() {
+  document.getElementById('admin-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('pwd-input').value = '';
+}
+
+// ── TABS ──────────────────────────────────────────────────────
+function showPanel(panel) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.atab').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + panel).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ── TOAST ─────────────────────────────────────────────────────
+function showToast(msg, error=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (error ? ' error' : '');
+  setTimeout(() => t.className = 'toast', 3000);
+}
+
+// ── MODAL ─────────────────────────────────────────────────────
+function abrirModal(id) { document.getElementById(id).classList.add('open'); }
+function cerrarModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ════════════════════════════════════════════════════════════
+// RECOMENDACIONES
+// ════════════════════════════════════════════════════════════
+async function cargarRec() {
+  const res = await fetch(`${SUPA_URL}/rest/v1/recomendaciones_arroz?order=variedad.asc,created_at.desc`, { headers });
+  const data = await res.json();
+  if (!res.ok) { showToast('Error: ' + (data.message || res.status), true); return; }
+  renderTablaRec(Array.isArray(data) ? data : []);
+}
+
+function renderTablaRec(lista) {
+  const tbody = document.getElementById('rec-tbody');
+  if (!lista || lista.length === 0) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No hay recomendaciones. Agrega la primera.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = lista.map(r => `
+    <tr>
+      <td><span class="badge-variedad">${r.variedad}</span></td>
+      <td><strong>${r.producto}</strong></td>
+      <td>${r.etapa || '—'}</td>
+      <td>${r.dosis || '—'}</td>
+      <td style="max-width:180px;font-size:13px;color:#666;">${r.momento || '—'}</td>
+      <td>
+        <div class="td-actions">
+          <button class="btn-edit" onclick="editarRec(${JSON.stringify(r).replace(/"/g,'&quot;')})">Editar</button>
+          <button class="btn-del" onclick="eliminarRec(${r.id})">Eliminar</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function abrirModalRec(rec=null) {
+  document.getElementById('rec-id').value = rec ? rec.id : '';
+  document.getElementById('rec-variedad').value = rec ? rec.variedad : '';
+  document.getElementById('rec-etapa').value = rec ? (rec.etapa||'') : '';
+  document.getElementById('rec-producto').value = rec ? rec.producto : '';
+  document.getElementById('rec-dosis').value = rec ? (rec.dosis||'') : '';
+  document.getElementById('rec-momento').value = rec ? (rec.momento||'') : '';
+  document.getElementById('rec-descripcion').value = rec ? (rec.descripcion||'') : '';
+  document.getElementById('modal-rec-title').textContent = rec ? 'Editar Recomendación' : 'Nueva Recomendación';
+  abrirModal('modal-rec');
+}
+function editarRec(rec) { abrirModalRec(rec); }
+
+async function guardarRec() {
+  const variedad = document.getElementById('rec-variedad').value;
+  const producto = document.getElementById('rec-producto').value.trim();
+  if (!variedad || !producto) { showToast('Variedad y producto son requeridos', true); return; }
+  const id = document.getElementById('rec-id').value;
+  const body = {
+    variedad,
+    etapa: document.getElementById('rec-etapa').value.trim(),
+    producto,
+    dosis: document.getElementById('rec-dosis').value.trim(),
+    momento: document.getElementById('rec-momento').value.trim(),
+    descripcion: document.getElementById('rec-descripcion').value.trim(),
+  };
+  const btn = document.getElementById('btn-save-rec');
+  btn.disabled = true; btn.textContent = 'Guardando...';
+  try {
+    if (id) {
+      await fetch(`${SUPA_URL}/rest/v1/recomendaciones_arroz?id=eq.${id}`, { method:'PATCH', headers, body: JSON.stringify(body) });
+      showToast('✅ Recomendación actualizada');
+    } else {
+      await fetch(`${SUPA_URL}/rest/v1/recomendaciones_arroz`, { method:'POST', headers, body: JSON.stringify(body) });
+      showToast('✅ Recomendación agregada');
+    }
+    cerrarModal('modal-rec');
+    cargarRec();
+  } catch(e) { showToast('Error guardando', true); }
+  btn.disabled = false; btn.textContent = 'Guardar';
+}
+
+async function eliminarRec(id) {
+  if (!confirm('¿Eliminar esta recomendación?')) return;
+  await fetch(`${SUPA_URL}/rest/v1/recomendaciones_arroz?id=eq.${id}`, { method:'DELETE', headers });
+  showToast('🗑️ Recomendación eliminada');
+  cargarRec();
+}
+
+// ════════════════════════════════════════════════════════════
+// PATROCINADORES
+// ════════════════════════════════════════════════════════════
+async function cargarPat() {
+  const res = await fetch(`${SUPA_URL}/rest/v1/patrocinadores_arroz?order=orden.asc,created_at.desc`, { headers });
+  const data = await res.json();
+  if (!res.ok) { showToast('Error: ' + (data.message || res.status), true); return; }
+  renderTablaPat(Array.isArray(data) ? data : []);
+}
+
+function renderTablaPat(lista) {
+  const tbody = document.getElementById('pat-tbody');
+  if (!lista || lista.length === 0) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="5">No hay patrocinadores. Agrega el primero.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = lista.map(p => `
+    <tr>
+      <td><strong>${p.nombre}</strong></td>
+      <td>${p.tipo || '—'}</td>
+      <td>${p.origen || '—'}</td>
+      <td>${p.orden || '—'}</td>
+      <td>
+        <div class="td-actions">
+          <button class="btn-edit" onclick="editarPat(${JSON.stringify(p).replace(/"/g,'&quot;')})">Editar</button>
+          <button class="btn-del" onclick="eliminarPat(${p.id})">Eliminar</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function abrirModalPat(pat=null) {
+  document.getElementById('pat-id').value = pat ? pat.id : '';
+  document.getElementById('pat-nombre').value = pat ? pat.nombre : '';
+  document.getElementById('pat-tipo').value = pat ? (pat.tipo||'') : '';
+  document.getElementById('pat-origen').value = pat ? (pat.origen||'') : '';
+  document.getElementById('pat-orden').value = pat ? (pat.orden||'') : '';
+  document.getElementById('pat-resena').value = pat ? (pat.resena||'') : '';
+  document.getElementById('pat-imagen').value = pat ? (pat.imagen_url||'') : '';
+  document.getElementById('pat-web').value = pat ? (pat.sitio_web||'') : '';
+  document.getElementById('pat-file').value = '';
+  document.getElementById('upload-progress').style.display = 'none';
+  document.getElementById('progress-bar').style.width = '0%';
+  document.getElementById('progress-bar').style.background = 'var(--green-main)';
+  document.getElementById('upload-wrap').style.borderColor = '';
+  previewImg(pat ? (pat.imagen_url||'') : '');
+  document.getElementById('modal-pat-title').textContent = pat ? 'Editar Patrocinador' : 'Nuevo Patrocinador';
+  abrirModal('modal-pat');
+}
+function editarPat(pat) { abrirModalPat(pat); }
+
+function previewImg(url) {
+  const img = document.getElementById('img-preview');
+  if (url) { img.src = url; img.classList.add('show'); }
+  else { img.classList.remove('show'); img.src = ''; }
+}
+
+async function onFileSelect(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { showToast('Imagen muy grande — máx 5MB', true); return; }
+
+  // Mostrar preview local inmediato
+  const reader = new FileReader();
+  reader.onload = e => previewImg(e.target.result);
+  reader.readAsDataURL(file);
+
+  // Mostrar barra de progreso
+  document.getElementById('upload-progress').style.display = 'block';
+  document.getElementById('progress-bar').style.width = '30%';
+  document.getElementById('progress-text').textContent = 'Subiendo imagen...';
+
+  try {
+    const ext      = file.name.split('.').pop();
+    const fileName = `pat_${Date.now()}.${ext}`;
+    const STORAGE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpbHZydm53ZHRwYmtjZndrdHFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyMjI3MDcsImV4cCI6MjA5Njc5ODcwN30.kf0jV-496fzXziaPYbsjn5obV6-JUXAXW4hRMDUM6WU";
+
+    document.getElementById('progress-bar').style.width = '60%';
+
+    const res = await fetch(`${SUPA_URL}/storage/v1/object/patrocinadores/${fileName}`, {
+      method: 'POST',
+      headers: {
+        'apikey': STORAGE_KEY,
+        'Authorization': 'Bearer ' + STORAGE_KEY,
+        'Content-Type': file.type,
+        'x-upsert': 'true'
+      },
+      body: file
+    });
+
+    document.getElementById('progress-bar').style.width = '100%';
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.message || res.status);
+    }
+
+    // URL pública de la imagen
+    const publicUrl = `${SUPA_URL}/storage/v1/object/public/patrocinadores/${fileName}`;
+    document.getElementById('pat-imagen').value = publicUrl;
+    previewImg(publicUrl);
+
+    document.getElementById('progress-text').textContent = '✅ Imagen subida correctamente';
+    document.getElementById('upload-wrap').style.borderColor = 'var(--green-main)';
+    setTimeout(() => { document.getElementById('upload-progress').style.display = 'none'; }, 2000);
+
+  } catch(e) {
+    document.getElementById('progress-text').textContent = '❌ Error: ' + e.message;
+    document.getElementById('progress-bar').style.background = 'var(--red)';
+    showToast('Error subiendo imagen: ' + e.message, true);
+  }
+}
+
+async function guardarPat() {
+  const nombre = document.getElementById('pat-nombre').value.trim();
+  const resena = document.getElementById('pat-resena').value.trim();
+  if (!nombre || !resena) { showToast('Nombre y reseña son requeridos', true); return; }
+  const id = document.getElementById('pat-id').value;
+  const body = {
+    nombre,
+    tipo: document.getElementById('pat-tipo').value.trim(),
+    origen: document.getElementById('pat-origen').value.trim(),
+    orden: parseInt(document.getElementById('pat-orden').value) || 99,
+    resena,
+    imagen_url: document.getElementById('pat-imagen').value.trim(),
+    sitio_web: document.getElementById('pat-web').value.trim(),
+  };
+  const btn = document.getElementById('btn-save-pat');
+  btn.disabled = true; btn.textContent = 'Guardando...';
+  try {
+    if (id) {
+      await fetch(`${SUPA_URL}/rest/v1/patrocinadores_arroz?id=eq.${id}`, { method:'PATCH', headers, body: JSON.stringify(body) });
+      showToast('✅ Patrocinador actualizado');
+    } else {
+      await fetch(`${SUPA_URL}/rest/v1/patrocinadores_arroz`, { method:'POST', headers, body: JSON.stringify(body) });
+      showToast('✅ Patrocinador agregado');
+    }
+    cerrarModal('modal-pat');
+    cargarPat();
+  } catch(e) { showToast('Error guardando', true); }
+  btn.disabled = false; btn.textContent = 'Guardar';
+}
+
+async function eliminarPat(id) {
+  if (!confirm('¿Eliminar este patrocinador?')) return;
+  await fetch(`${SUPA_URL}/rest/v1/patrocinadores_arroz?id=eq.${id}`, { method:'DELETE', headers });
+  showToast('🗑️ Patrocinador eliminado');
+  cargarPat();
+}
+</script>
+</body>
+</html>
