@@ -7,104 +7,6 @@ new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-KDJN27Q9');
-// CHATBOT
-var chatOpen = false;
-var chatHistory = [];
-var SYSTEM_PROMPT = `Eres el asistente virtual oficial de AGROVERDE AGV SRL. Tu nombre es "Asistente AGROVERDE". Eres autonomo, amable y profesional.
-
-=== INFORMACION DE LA EMPRESA ===
-- Nombre: AGROVERDE AGV SRL
-- Ubicacion: Villa Riva, Republica Dominicana
-- WhatsApp: 809-489-9215
-- Instagram: @Agroverderd
-- Web: agroverdeagv.com
-
-=== SERVICIOS ===
-1. COMPRA DE ARROZ: Compramos todas las variedades directamente al productor: Lucero, Guri, Jaragua, Quisquella, Robusta, Torazo y otras. Proceso transparente: recepcion, pesaje, medicion de humedad y liquidacion inmediata.
-2. INSUMOS AGRICOLAS: Vendemos todos los insumos agricolas para cosechas de todos los frutos y cereales.
-3. FINANCIAMIENTO: Evaluamos las tierras del productor, verificamos que todo este en orden y procedemos a financiar. El interesado debe contactarnos o visitarnos.
-4. LOGISTICA Y TRANSPORTE: Carga y transporte agricola.
-5. CALCULADORA DE PESADA: En nuestra web el productor puede calcular fanegas y valor de factura. Formula: Fanegas = Kilos Neto / % Humedad. Valor = Fanegas x Precio por Fanega.
-
-=== REGLAS DE COMPORTAMIENTO ===
-- Responde SIEMPRE en espanol dominicano, de forma amable, clara y profesional.
-- Puedes responder cualquier pregunta relacionada con agricultura, arroz, insumos, financiamiento o la empresa.
-- Si el usuario pregunta algo que no sabes con certeza, dilo honestamente y dirige al WhatsApp 809-489-9215.
-- NUNCA inventes precios, cifras, condiciones de financiamiento ni datos que no te hayan dado.
-- NUNCA hagas comentarios negativos sobre competidores ni otras empresas.
-- NUNCA digas nada que pueda perjudicar la imagen o reputacion de AGROVERDE.
-- NUNCA hagas promesas de precios, plazos o condiciones especificas sin que el usuario consulte directamente con la empresa.
-- Si alguien hace preguntas fuera del tema agricola o de la empresa (politica, religion, temas personales, etc.), responde amablemente que solo puedes ayudar con temas relacionados a AGROVERDE y la agricultura.
-- Si el usuario muestra interes en hacer negocio, siempre invitalo a contactar por WhatsApp al 809-489-9215 o visitar en Villa Riva.
-- Sé breve y directo. Maximo 3-4 oraciones por respuesta salvo que el tema lo requiera.
-- Termina siempre con disposicion a seguir ayudando o con la invitacion a contactar.`;
-
-function toggleChat(){
-  chatOpen = !chatOpen;
-  var box = document.getElementById('chatBox');
-  box.classList.toggle('open', chatOpen);
-  if(chatOpen && chatHistory.length === 0){
-    addMessage('bot', 'Hola! Soy el asistente de AGROVERDE AGV. Puedo ayudarte con informacion sobre compra de arroz, insumos agricolas, financiamiento y nuestra calculadora de pesada. Como puedo ayudarte hoy?');
-  }
-  if(chatOpen){ document.getElementById('chatInput').focus(); }
-}
-
-function addMessage(type, text){
-  var msgs = document.getElementById('chatMessages');
-  var div = document.createElement('div');
-  div.className = 'msg ' + type;
-  div.textContent = text;
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-  return div;
-}
-
-function showTyping(){
-  var msgs = document.getElementById('chatMessages');
-  var div = document.createElement('div');
-  div.className = 'msg typing';
-  div.id = 'typingIndicator';
-  div.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-function removeTyping(){
-  var t = document.getElementById('typingIndicator');
-  if(t) t.remove();
-}
-
-async function sendMessage(){
-  var input = document.getElementById('chatInput');
-  var text = input.value.trim();
-  if(!text) return;
-  input.value = '';
-  addMessage('user', text);
-  chatHistory.push({role:'user', content:text});
-  showTyping();
-  try {
-  var response = await fetch('https://agroverdeweb.vercel.app/api/chat', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 400,
-        system: SYSTEM_PROMPT,
-        messages: chatHistory
-      })
-    });
-    var data = await response.json();
-    removeTyping();
-    var reply = data.content && data.content[0] ? data.content[0].text : 'Lo siento, hubo un error. Contactanos al 809-489-9215.';
-    addMessage('bot', reply);
-    chatHistory.push({role:'assistant', content:reply});
-    if(chatHistory.length > 20){ chatHistory = chatHistory.slice(-20); }
-  } catch(e) {
-    removeTyping();
-    addMessage('bot', 'Lo siento, hubo un problema de conexion. Contactanos directamente al WhatsApp 809-489-9215.');
-  }
-}
-
 </script>
 <!-- End Google Tag Manager -->
 <meta charset="UTF-8">
@@ -120,6 +22,17 @@ async function sendMessage(){
   nav ul{list-style:none;display:flex;gap:20px;}
   nav ul a{color:#fff;text-decoration:none;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;transition:color 0.3s;}
   nav ul a:hover{color:var(--gold);}
+
+  /* HAMBURGER — oculto en desktop */
+  .nav-toggle{display:none;background:none;border:none;cursor:pointer;width:32px;height:32px;padding:0;position:relative;z-index:110;}
+  .nav-toggle span{display:block;position:absolute;left:4px;right:4px;height:2px;background:var(--gold);border-radius:2px;transition:all 0.3s ease;}
+  .nav-toggle span:nth-child(1){top:9px;}
+  .nav-toggle span:nth-child(2){top:16px;}
+  .nav-toggle span:nth-child(3){top:23px;}
+  .nav-toggle.open span:nth-child(1){top:16px;transform:rotate(45deg);}
+  .nav-toggle.open span:nth-child(2){opacity:0;}
+  .nav-toggle.open span:nth-child(3){top:16px;transform:rotate(-45deg);}
+
   .hero{position:relative;height:100vh;min-height:600px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
   .hero-bg{position:absolute;inset:0;background-image:url("banner.jpg");background-size:cover;background-position:center;animation:slowZoom 20s ease-in-out infinite alternate;}
   @keyframes slowZoom{from{transform:scale(1.0)}to{transform:scale(1.08)}}
@@ -222,9 +135,51 @@ async function sendMessage(){
   footer{background:var(--green-dark);color:white;text-align:center;padding:48px 40px;border-top:3px solid var(--gold);}
   .footer-logo{height:60px;width:auto;object-fit:contain;margin-bottom:20px;}
   footer p{font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:0.6;margin-top:8px;}
+
   @media(max-width:768px){
-    nav{padding:0 16px;}nav ul{gap:8px;}nav ul a{font-size:9px;letter-spacing:1px;}
-    .nav-logo{height:44px;}.nosotros-grid{grid-template-columns:1fr;gap:40px;}
+    nav{padding:0 16px;}
+    .nav-logo{height:44px;}
+
+    /* Mostrar hamburguesa, ocultar lista horizontal */
+    .nav-toggle{display:block;}
+    nav ul{
+      display:flex;
+      flex-direction:column;
+      position:fixed;
+      top:70px;
+      right:0;
+      width:240px;
+      max-width:80vw;
+      background:rgba(15,46,15,0.98);
+      backdrop-filter:blur(10px);
+      gap:0;
+      padding:8px 0;
+      border-left:2px solid var(--gold);
+      border-bottom:2px solid var(--gold);
+      border-radius:0 0 0 10px;
+      transform:translateX(100%);
+      opacity:0;
+      visibility:hidden;
+      transition:transform 0.35s ease, opacity 0.35s ease, visibility 0.35s;
+      max-height:calc(100vh - 70px);
+      overflow-y:auto;
+    }
+    nav ul.open{
+      transform:translateX(0);
+      opacity:1;
+      visibility:visible;
+    }
+    nav ul li{width:100%;}
+    nav ul a{
+      display:block;
+      padding:16px 24px;
+      font-size:12px;
+      letter-spacing:1.5px;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+    nav ul li:last-child a{border-bottom:none;}
+
+    .nosotros-grid{grid-template-columns:1fr;gap:40px;}
     section{padding:60px 20px;}.social-links{flex-direction:column;align-items:center;}
     .slide img{max-height:280px;}.map-wrap iframe{height:260px;}
     .calc-grid{grid-template-columns:1fr;}.resultado-grid{grid-template-columns:1fr;}
@@ -282,14 +237,18 @@ async function sendMessage(){
 
 <nav>
   <img class="nav-logo" src="logo.png" alt="AGROVERDE AGV">
-  <ul>
-    <li><a href="#nosotros">Nosotros</a></li>
-    <li><a href="#gustamos">Que hacemos</a></li>
-    <li><a href="#compra">Compra</a></li>
-    <li><a href="#calculadora">Calculadora</a></li>
-    <li><a href="#galeria">Galeria</a></li>
-    <li><a href="#video">Comercial</a></li>
-    <li><a href="#redes">Contacto</a></li>
+  <button class="nav-toggle" id="navToggle" onclick="toggleNav()" aria-label="Abrir menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul id="navMenu">
+    <li><a href="#nosotros" onclick="closeNav()">Nosotros</a></li>
+    <li><a href="#gustamos" onclick="closeNav()">Que hacemos</a></li>
+    <li><a href="#compra" onclick="closeNav()">Compra</a></li>
+    <li><a href="#calculadora" onclick="closeNav()">Calculadora</a></li>
+    <li><a href="#galeria" onclick="closeNav()">Galeria</a></li>
+    <li><a href="#video" onclick="closeNav()">Comercial</a></li>
+    <li><a href="#redes" onclick="closeNav()">Contacto</a></li>
+    <li><a href="#comentarios" onclick="closeNav()">Comentarios</a></li>
     <li><a href="recomendaciones.html" style="color:var(--gold);">Recomendaciones</a></li>
   </ul>
 </nav>
@@ -493,6 +452,22 @@ async function sendMessage(){
 </footer>
 
 <script>
+// MENU MOVIL
+function toggleNav(){
+  var menu = document.getElementById('navMenu');
+  var btn  = document.getElementById('navToggle');
+  var isOpen = menu.classList.toggle('open');
+  btn.classList.toggle('open', isOpen);
+  btn.setAttribute('aria-expanded', isOpen);
+}
+function closeNav(){
+  var menu = document.getElementById('navMenu');
+  var btn  = document.getElementById('navToggle');
+  menu.classList.remove('open');
+  btn.classList.remove('open');
+  btn.setAttribute('aria-expanded', false);
+}
+
 var current=0,total=12;
 var autoTimer=setInterval(function(){changeSlide(1);},3500);
 function changeSlide(dir){current=(current+dir+total)%total;updateSlider();resetTimer();}
@@ -628,7 +603,6 @@ async function sendMessage(){
     addMessage('bot', 'Lo siento, hubo un problema de conexion. Contactanos directamente al WhatsApp 809-489-9215.');
   }
 }
-
 </script>
 
 <!-- CHATBOT FAB -->
