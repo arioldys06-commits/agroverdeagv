@@ -87,9 +87,9 @@
   #pat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:32px;}
   .pat-card{background:white;border:2px solid var(--green-pale);border-radius:12px;overflow:hidden;transition:all 0.3s;box-shadow:0 4px 16px rgba(0,0,0,0.06);display:flex;flex-direction:column;}
   .pat-card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 12px 32px rgba(200,168,75,0.15);}
-  .pat-img-wrap{height:200px;background:var(--gray-light);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
-  .pat-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s;}
-  .pat-card:hover .pat-img-wrap img{transform:scale(1.04);}
+  .pat-img-wrap{height:220px;background:white;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;border-bottom:2px solid var(--green-pale);}
+  .pat-img-wrap img{width:100%;height:100%;object-fit:contain;padding:16px;transition:transform 0.4s;background:white;}
+  .pat-card:hover .pat-img-wrap img{transform:scale(1.06);}
   .pat-img-placeholder{font-size:3rem;color:#ccc;}
   .pat-badge{position:absolute;top:12px;right:12px;background:var(--gold);color:var(--green-dark);font-size:10px;font-weight:900;letter-spacing:2px;padding:4px 10px;border-radius:20px;text-transform:uppercase;}
   .pat-body{padding:24px;flex:1;display:flex;flex-direction:column;}
@@ -142,7 +142,7 @@
 <div class="tabs-wrap">
   <div class="tabs">
     <button class="tab-btn active" onclick="showTab('recomendaciones')">🌾 Recomendaciones de Aplicación</button>
-    <button class="tab-btn" onclick="showTab('patrocinadores')">⭐ Arroces Patrocinadores</button>
+    <button class="tab-btn" onclick="showTab('patrocinadores')">⭐ Patrocinadores</button>
   </div>
 </div>
 
@@ -165,10 +165,10 @@
 <!-- PATROCINADORES -->
 <div id="tab-patrocinadores" class="tab-section">
   <div class="inner">
-    <p class="sec-label">Nuestros aliados</p>
-    <h2 class="sec-title">Arroces que nos Respaldan</h2>
+    <p class="sec-label">Factorías que confían en nosotros</p>
+    <h2 class="sec-title">Nuestros Patrocinadores</h2>
     <div class="sec-divider"></div>
-    <p class="sec-desc">Factorías y marcas de arroz que confían en AGROVERDE y forman parte de nuestra red de aliados comerciales.</p>
+    <p class="sec-desc">Factorías arroceras que respaldan y apoyan a AGROVERDE AGV como aliados comerciales de confianza.</p>
     <div id="pat-grid">
       <div class="loading">Cargando patrocinadores...</div>
     </div>
