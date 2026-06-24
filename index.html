@@ -459,31 +459,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <h2 class="section-title">Informacion para el productor</h2>
     <div class="section-divider"></div>
     <p style="color:#666;font-size:1.05rem;line-height:1.9;">Guias tecnicas y recomendaciones del equipo de AGROVERDE para maximizar tu cosecha.</p>
-    <div class="news-grid">
-      <div class="news-card reveal">
-        <div class="news-img">&#129432;</div>
-        <div class="news-body">
-          <div class="news-tag">Plagas</div>
-          <div class="news-titulo">Como controlar plagas en la siembra directa de arroz</div>
-          <div class="news-fecha">Junio 2026</div>
-        </div>
-      </div>
-      <div class="news-card reveal">
-        <div class="news-img">&#128167;</div>
-        <div class="news-body">
-          <div class="news-tag">Fertilizacion</div>
-          <div class="news-titulo">Manejo del agua y fertilizacion en etapa de macollamiento</div>
-          <div class="news-fecha">Mayo 2026</div>
-        </div>
-      </div>
-      <div class="news-card reveal">
-        <div class="news-img">&#128200;</div>
-        <div class="news-body">
-          <div class="news-tag">Mercado</div>
-          <div class="news-titulo">Comportamiento del precio del arroz en el primer semestre 2026</div>
-          <div class="news-fecha">Abril 2026</div>
-        </div>
-      </div>
+    <div class="news-grid" id="news-grid">
+      <div style="text-align:center;padding:40px;color:#aaa;grid-column:1/-1;">Cargando...</div>
     </div>
   </div>
 </section>
@@ -685,6 +662,36 @@ var observer = new IntersectionObserver(function(entries) {
   });
 }, {threshold: 0.12});
 revealEls.forEach(function(el) { observer.observe(el); });
+
+// NOTICIAS
+async function cargarNoticias() {
+  try {
+    var res = await fetch(SUPA_URL+'/rest/v1/noticias_web?activo=eq.true&order=orden.asc', {
+      headers: {'apikey': SUPA_KEY, 'Authorization': 'Bearer '+SUPA_KEY}
+    });
+    var data = await res.json();
+    var grid = document.getElementById('news-grid');
+    if (!Array.isArray(data) || data.length === 0) {
+      grid.innerHTML = '<div style="text-align:center;padding:40px;color:#aaa;grid-column:1/-1;">No hay noticias disponibles.</div>';
+      return;
+    }
+    grid.innerHTML = data.map(function(n) {
+      return '<div class="news-card reveal">'+
+        '<div class="news-img">'+n.emoji+'</div>'+
+        '<div class="news-body">'+
+          '<div class="news-tag">'+n.categoria+'</div>'+
+          '<div class="news-titulo">'+n.titulo+'</div>'+
+          '<div class="news-fecha">'+n.fecha+'</div>'+
+        '</div>'+
+      '</div>';
+    }).join('');
+    // aplicar reveal a las nuevas tarjetas
+    grid.querySelectorAll('.reveal').forEach(function(el){ observer.observe(el); });
+  } catch(e) {
+    document.getElementById('news-grid').innerHTML = '<div style="text-align:center;padding:40px;color:#aaa;grid-column:1/-1;">Error cargando noticias.</div>';
+  }
+}
+cargarNoticias();
 
 // CHATBOT
 var chatOpen = false;
