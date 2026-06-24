@@ -636,33 +636,43 @@ function animarContador(id, target, suffix) {
   }, 25);
 }
 window.addEventListener('load', function() {
-  setTimeout(function() {
-    animarContador('stat-productores', 430, '+');
-    animarContador('stat-anos', 5, '');
-    animarContador('stat-variedades', 7, '');
-  }, 400);
-  cargarKgComprados();
+  cargarEstadisticas();
 });
 
-async function cargarKgComprados() {
+async function cargarEstadisticas() {
   try {
     var res = await fetch(SUPA_URL+'/rest/v1/estadisticas_web?id=eq.1', {
       headers: {'apikey': SUPA_KEY, 'Authorization': 'Bearer '+SUPA_KEY}
     });
     var data = await res.json();
-    if (Array.isArray(data) && data.length > 0 && data[0].kg_comprados) {
-      animarContador('stat-kg', data[0].kg_comprados, '+');
+    if (Array.isArray(data) && data.length > 0) {
+      var d = data[0];
+      setTimeout(function() {
+        animarContador('stat-productores', d.productores || 430, '+');
+        animarContador('stat-kg', d.kg_comprados || 0, '+');
+        animarContador('stat-anos', d.anos || 5, '');
+        animarContador('stat-variedades', d.variedades || 7, '');
+      }, 400);
     } else {
-      document.getElementById('stat-kg').textContent = '—';
+      cargarEstadisticasDefault();
     }
   } catch(e) {
-    document.getElementById('stat-kg').textContent = '—';
+    cargarEstadisticasDefault();
   }
 }
 
+function cargarEstadisticasDefault() {
+  setTimeout(function() {
+    animarContador('stat-productores', 430, '+');
+    animarContador('stat-kg', 13681648, '+');
+    animarContador('stat-anos', 5, '');
+    animarContador('stat-variedades', 7, '');
+  }, 400);
+}
+
 // SUPABASE CONFIG
-var SUPA_URL = "https://qilvrvnwdtpbkcfwktqs.supabase.co";
-var SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpbHZydm53ZHRwYmtjZndrdHFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyMjI3MDcsImV4cCI6MjA5Njc5ODcwN30.kf0jV-496fzXziaPYbsjn5obV6-JUXAXW4hRMDUM6WU";
+var SUPA_URL = "https://fykgeclufilwsvpdslmm.supabase.co";
+var SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5a2dlY2x1Zmlsd3N2cGRzbG1tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyNjM4NzYsImV4cCI6MjA5NzgzOTg3Nn0.1dRbAG-gvbzMDl49qVW-GYrkt5bhQhBHqvMUG402vyQ";
 
 // SCROLL REVEAL
 var revealEls = document.querySelectorAll('.reveal');
