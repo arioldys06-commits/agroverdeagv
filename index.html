@@ -11,7 +11,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AGROVERDE AGV - Agricultura con Proposito</title>
+<title>AGROVERDE AGV — Agricultura con Propósito</title>
+<meta name="description" content="Compra de arroz, insumos agrícolas y financiamiento para productores dominicanos. Villa Riva, República Dominicana. Proceso transparente y pago inmediato.">
+<meta name="keywords" content="arroz, compra de arroz, insumos agricolas, agroverde, villa riva, productores dominicanos, fanegas">
+<link rel="canonical" href="https://agroverdeagv.com/">
+<link rel="icon" href="logo.png" type="image/png">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://agroverdeagv.com/">
+<meta property="og:title" content="AGROVERDE AGV — Agricultura con Propósito">
+<meta property="og:description" content="Compra de arroz directamente al productor. Proceso transparente, pago inmediato. Insumos agrícolas y financiamiento. Villa Riva, Rep. Dom.">
+<meta property="og:image" content="https://agroverdeagv.com/banner.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="es_DO">
+<meta property="og:site_name" content="AGROVERDE AGV">
+<!-- WhatsApp / Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AGROVERDE AGV — Agricultura con Propósito">
+<meta name="twitter:description" content="Compra de arroz directamente al productor. Proceso transparente, pago inmediato.">
+<meta name="twitter:image" content="https://agroverdeagv.com/banner.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
   :root{--green-dark:#1a4a1a;--green-main:#2d7a2d;--green-light:#4caf50;--green-pale:#e8f5e9;--gold:#c8a84b;--white:#ffffff;--gray-light:#f5f5f5;}
@@ -22,8 +41,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   nav ul{list-style:none;display:flex;gap:20px;}
   nav ul a{color:#fff;text-decoration:none;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;transition:color 0.3s;}
   nav ul a:hover{color:var(--gold);}
-
-  /* HAMBURGER — oculto en desktop */
   .nav-toggle{display:none;background:none;border:none;cursor:pointer;width:32px;height:32px;padding:0;position:relative;z-index:110;}
   .nav-toggle span{display:block;position:absolute;left:4px;right:4px;height:2px;background:var(--gold);border-radius:2px;transition:all 0.3s ease;}
   .nav-toggle span:nth-child(1){top:9px;}
@@ -32,6 +49,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .nav-toggle.open span:nth-child(1){top:16px;transform:rotate(45deg);}
   .nav-toggle.open span:nth-child(2){opacity:0;}
   .nav-toggle.open span:nth-child(3){top:16px;transform:rotate(-45deg);}
+
+  /* PRICE TICKER */
+  .price-ticker{background:var(--gold);padding:10px 40px;display:flex;align-items:center;gap:20px;margin-top:70px;}
+  .ticker-label{font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--green-dark);white-space:nowrap;flex-shrink:0;}
+  .ticker-sep{color:rgba(26,74,26,0.35);font-weight:300;}
+  .ticker-items{display:flex;gap:20px;align-items:center;flex-wrap:wrap;}
+  .ticker-item{display:flex;align-items:center;gap:6px;}
+  .ticker-variedad{font-size:12px;font-weight:700;color:var(--green-dark);}
+  .ticker-precio{font-size:13px;font-weight:900;color:var(--green-dark);}
+  .ticker-unit{font-size:10px;color:#5a3d0a;letter-spacing:1px;}
+
+  /* STATS */
+  .stats-bar{background:var(--green-dark);padding:0;display:grid;grid-template-columns:repeat(4,1fr);}
+  .stat-item{text-align:center;padding:28px 16px;border-right:1px solid rgba(255,255,255,0.08);}
+  .stat-item:last-child{border-right:none;}
+  .stat-num{font-family:"Playfair Display",serif;font-size:2.2rem;font-weight:900;color:var(--gold);display:block;line-height:1;}
+  .stat-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-top:6px;display:block;}
 
   .hero{position:relative;height:100vh;min-height:600px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
   .hero-bg{position:absolute;inset:0;background-image:url("banner.jpg");background-size:cover;background-position:center;animation:slowZoom 20s ease-in-out infinite alternate;}
@@ -53,6 +87,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .nosotros-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
   .nosotros-grid p{font-size:1.05rem;line-height:1.9;color:#444;margin-bottom:16px;}
   .nosotros-img-wrap img{width:100%;border-radius:8px;box-shadow:0 20px 50px rgba(0,0,0,0.15);}
+
+  /* TESTIMONIOS */
+  #testimonios{background:var(--gray-light);}
+  #testimonios .inner{max-width:1100px;margin:0 auto;}
+  .test-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:40px;}
+  .test-card{background:white;border:1px solid var(--green-pale);border-radius:12px;padding:28px;transition:transform 0.3s;}
+  .test-card:hover{transform:translateY(-4px);}
+  .test-stars{color:var(--gold);font-size:15px;margin-bottom:12px;letter-spacing:2px;}
+  .test-text{font-size:0.95rem;color:#555;line-height:1.8;margin-bottom:20px;font-style:italic;}
+  .test-author{display:flex;align-items:center;gap:12px;}
+  .test-avatar{width:40px;height:40px;border-radius:50%;background:var(--green-dark);display:flex;align-items:center;justify-content:center;color:var(--gold);font-weight:900;font-size:14px;flex-shrink:0;}
+  .test-name{font-weight:700;font-size:14px;color:var(--green-dark);}
+  .test-zona{font-size:11px;color:#aaa;letter-spacing:1px;margin-top:2px;}
+
   #gustamos{background:var(--green-dark);}
   #gustamos .inner{max-width:900px;margin:0 auto;}
   #gustamos .section-title{color:white;}
@@ -62,7 +110,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .variedades-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px;margin:40px 0;}
   .variedad-card{background:var(--green-pale);border:2px solid var(--green-light);border-radius:8px;padding:24px 16px;text-align:center;transition:all 0.3s;}
   .variedad-card:hover{background:var(--green-dark);border-color:var(--gold);transform:translateY(-4px);}
-  .variedad-card:hover .variedad-nombre{color:white;}
   .variedad-icon{font-size:2rem;margin-bottom:10px;display:block;}
   .variedad-nombre{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:var(--green-dark);letter-spacing:1px;}
   .variedad-card:hover .variedad-nombre{color:white;}
@@ -113,6 +160,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   #video .section-title{color:white;}#video .section-label{color:var(--gold);}
   .video-container{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,0.5);}
   .video-container iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}
+
+  /* NOTICIAS */
+  #noticias{background:white;}
+  #noticias .inner{max-width:1100px;margin:0 auto;}
+  .news-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:40px;}
+  .news-card{background:var(--gray-light);border-radius:12px;overflow:hidden;border:1px solid var(--green-pale);transition:all 0.3s;}
+  .news-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(45,122,45,0.12);}
+  .news-img{height:110px;display:flex;align-items:center;justify-content:center;font-size:3rem;background:var(--green-pale);}
+  .news-body{padding:20px;}
+  .news-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--green-main);font-weight:700;margin-bottom:6px;}
+  .news-titulo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:var(--green-dark);line-height:1.4;margin-bottom:8px;}
+  .news-fecha{font-size:11px;color:#aaa;letter-spacing:1px;}
+
   #redes{background:white;}
   #redes .inner{max-width:900px;margin:0 auto;text-align:center;}
   .social-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:40px;}
@@ -136,75 +196,42 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .footer-logo{height:60px;width:auto;object-fit:contain;margin-bottom:20px;}
   footer p{font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:0.6;margin-top:8px;}
 
+  /* SCROLL REVEAL */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
   @media(max-width:768px){
     nav{padding:0 16px;}
     .nav-logo{height:44px;}
-
-    /* Mostrar hamburguesa, ocultar lista horizontal */
     .nav-toggle{display:block;}
-    nav ul{
-      display:flex;
-      flex-direction:column;
-      position:fixed;
-      top:70px;
-      right:0;
-      width:240px;
-      max-width:80vw;
-      background:rgba(15,46,15,0.98);
-      backdrop-filter:blur(10px);
-      gap:0;
-      padding:8px 0;
-      border-left:2px solid var(--gold);
-      border-bottom:2px solid var(--gold);
-      border-radius:0 0 0 10px;
-      transform:translateX(100%);
-      opacity:0;
-      visibility:hidden;
-      transition:transform 0.35s ease, opacity 0.35s ease, visibility 0.35s;
-      max-height:calc(100vh - 70px);
-      overflow-y:auto;
-    }
-    nav ul.open{
-      transform:translateX(0);
-      opacity:1;
-      visibility:visible;
-    }
+    nav ul{display:flex;flex-direction:column;position:fixed;top:70px;right:0;width:240px;max-width:80vw;background:rgba(15,46,15,0.98);backdrop-filter:blur(10px);gap:0;padding:8px 0;border-left:2px solid var(--gold);border-bottom:2px solid var(--gold);border-radius:0 0 0 10px;transform:translateX(100%);opacity:0;visibility:hidden;transition:transform 0.35s ease,opacity 0.35s ease,visibility 0.35s;max-height:calc(100vh - 70px);overflow-y:auto;}
+    nav ul.open{transform:translateX(0);opacity:1;visibility:visible;}
     nav ul li{width:100%;}
-    nav ul a{
-      display:block;
-      padding:16px 24px;
-      font-size:12px;
-      letter-spacing:1.5px;
-      border-bottom:1px solid rgba(255,255,255,0.08);
-    }
+    nav ul a{display:block;padding:16px 24px;font-size:12px;letter-spacing:1.5px;border-bottom:1px solid rgba(255,255,255,0.08);}
     nav ul li:last-child a{border-bottom:none;}
-
+    .price-ticker{padding:10px 16px;flex-wrap:wrap;gap:10px;margin-top:70px;}
+    .stats-bar{grid-template-columns:1fr 1fr;}
+    .stat-item{border-right:none;border-bottom:1px solid rgba(255,255,255,0.08);}
     .nosotros-grid{grid-template-columns:1fr;gap:40px;}
-    section{padding:60px 20px;}.social-links{flex-direction:column;align-items:center;}
-    .slide img{max-height:280px;}.map-wrap iframe{height:260px;}
-    .calc-grid{grid-template-columns:1fr;}.resultado-grid{grid-template-columns:1fr;}
+    section{padding:60px 20px;}
+    .social-links{flex-direction:column;align-items:center;}
+    .slide img{max-height:280px;}
+    .map-wrap iframe{height:260px;}
+    .calc-grid{grid-template-columns:1fr;}
+    .resultado-grid{grid-template-columns:1fr;}
     .proceso-steps{grid-template-columns:1fr 1fr;}
   }
 
   /* CHATBOT */
-  .chat-fab{position:fixed;bottom:28px;right:28px;z-index:999;width:60px;height:60px;
-    background:var(--green-dark);border:3px solid var(--gold);border-radius:50%;
-    cursor:pointer;display:flex;align-items:center;justify-content:center;
-    box-shadow:0 4px 20px rgba(0,0,0,0.3);transition:all 0.3s;}
+  .chat-fab{position:fixed;bottom:28px;right:28px;z-index:999;width:60px;height:60px;background:var(--green-dark);border:3px solid var(--gold);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,0.3);transition:all 0.3s;}
   .chat-fab:hover{transform:scale(1.1);background:var(--gold);}
   .chat-fab svg{width:28px;height:28px;fill:white;}
   .chat-fab:hover svg{fill:var(--green-dark);}
-  .chat-badge{position:absolute;top:-4px;right:-4px;background:#e53e3e;color:white;
-    font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;}
-  .chat-box{position:fixed;bottom:100px;right:28px;z-index:998;width:360px;
-    background:white;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.2);
-    border:2px solid var(--green-pale);display:none;flex-direction:column;overflow:hidden;
-    max-height:520px;}
+  .chat-badge{position:absolute;top:-4px;right:-4px;background:#e53e3e;color:white;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+  .chat-box{position:fixed;bottom:100px;right:28px;z-index:998;width:360px;background:white;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.2);border:2px solid var(--green-pale);display:none;flex-direction:column;overflow:hidden;max-height:520px;}
   .chat-box.open{display:flex;}
   .chat-header{background:var(--green-dark);padding:16px 20px;display:flex;align-items:center;gap:12px;border-bottom:2px solid var(--gold);}
-  .chat-avatar{width:40px;height:40px;border-radius:50%;background:var(--gold);
-    display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+  .chat-avatar{width:40px;height:40px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
   .chat-header-info h4{color:white;font-size:14px;font-weight:700;margin-bottom:2px;}
   .chat-header-info span{color:rgba(255,255,255,0.7);font-size:11px;}
   .chat-close{margin-left:auto;background:none;border:none;color:white;font-size:20px;cursor:pointer;opacity:0.7;}
@@ -215,17 +242,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .msg.user{background:var(--green-dark);color:white;border-bottom-right-radius:4px;align-self:flex-end;}
   .msg.typing{background:var(--green-pale);align-self:flex-start;padding:12px 16px;}
   .typing-dots{display:flex;gap:4px;align-items:center;}
-  .typing-dots span{width:7px;height:7px;border-radius:50%;background:var(--green-main);
-    animation:typingDot 1.2s infinite;}
+  .typing-dots span{width:7px;height:7px;border-radius:50%;background:var(--green-main);animation:typingDot 1.2s infinite;}
   .typing-dots span:nth-child(2){animation-delay:0.2s;}
   .typing-dots span:nth-child(3){animation-delay:0.4s;}
   @keyframes typingDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
   .chat-input-wrap{padding:12px 16px;border-top:2px solid var(--green-pale);display:flex;gap:8px;}
-  .chat-input{flex:1;padding:10px 14px;border:2px solid #ddd;border-radius:8px;font-size:13px;
-    font-family:"Lato",sans-serif;resize:none;outline:none;transition:border-color 0.3s;}
+  .chat-input{flex:1;padding:10px 14px;border:2px solid #ddd;border-radius:8px;font-size:13px;font-family:"Lato",sans-serif;resize:none;outline:none;transition:border-color 0.3s;}
   .chat-input:focus{border-color:var(--green-main);}
-  .chat-send{background:var(--gold);border:none;border-radius:8px;padding:10px 14px;
-    cursor:pointer;color:var(--green-dark);font-weight:700;font-size:13px;transition:all 0.3s;}
+  .chat-send{background:var(--gold);border:none;border-radius:8px;padding:10px 14px;cursor:pointer;color:var(--green-dark);font-weight:700;font-size:13px;transition:all 0.3s;}
   .chat-send:hover{background:var(--green-dark);color:white;}
   @media(max-width:768px){.chat-box{width:calc(100vw - 40px);right:20px;bottom:90px;}.chat-fab{bottom:20px;right:20px;}}
 </style>
@@ -233,7 +257,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <body>
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KDJN27Q9" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
 
 <nav>
   <img class="nav-logo" src="logo.png" alt="AGROVERDE AGV">
@@ -253,6 +276,33 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </ul>
 </nav>
 
+<!-- BARRA PRECIO DEL DIA -->
+<div class="price-ticker">
+  <span class="ticker-label">&#127806; Precio Fanega</span>
+  <span class="ticker-precio" style="font-size:15px;font-weight:900;color:#1a4a1a;">RD$3,700</span>
+  <span class="ticker-unit" style="font-size:11px;color:#5a3d0a;letter-spacing:1px;">/ fanega</span>
+</div>
+
+<!-- ESTADISTICAS ANIMADAS -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-num" id="stat-productores">0</span>
+    <span class="stat-label">Productores atendidos</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num" id="stat-kg">0</span>
+    <span class="stat-label">Kg comprados</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num" id="stat-anos">0</span>
+    <span class="stat-label">Anos en el campo</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num" id="stat-variedades">0</span>
+    <span class="stat-label">Variedades manejadas</span>
+  </div>
+</div>
+
 <section class="hero">
   <div class="hero-bg"></div><div class="hero-overlay"></div>
   <div class="hero-content">
@@ -264,14 +314,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </section>
 
 <section id="nosotros" style="background:white;">
-  <div class="nosotros-grid">
+  <div class="nosotros-grid reveal">
     <div>
       <p class="section-label">Quienes somos</p>
       <h2 class="section-title">Comprometidos con<br>el productor arrocero</h2>
       <div class="section-divider"></div>
       <p style="font-size:1.1rem;font-family:'Playfair Display',serif;color:var(--green-main);font-style:italic;margin-bottom:20px;">Comprometidos con el productor arrocero dominicano</p>
       <p>Agroverde/agvsrl es una empresa enfocada en brindar soluciones al sector arrocero dominicano, trabajando de la mano con productores, clientes y aliados del campo.</p>
-      <p>Nos dedicamos a la compra de arroz, carga, logistica y transporte agricola, ofreciendo un servicio responsable, directo y confiable. Nuestro compromiso es acompanar cada proceso con seriedad, desde el campo hasta la entrega final.</p>
+      <p>Nos dedicamos a la compra de arroz, carga, logistica y transporte agricola, ofreciendo un servicio responsable, directo y confiable.</p>
       <p>En Agroverde valoramos el esfuerzo del productor, porque sabemos que detras de cada cosecha hay trabajo, sacrificio y esperanza.</p>
       <p style="color:var(--green-main);font-weight:700;margin-top:8px;">Agroverde/agvsrl: tu socio en finanzas y arroz.</p>
     </div>
@@ -281,8 +331,52 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </div>
 </section>
 
-<section id="gustamos">
+<!-- TESTIMONIOS -->
+<section id="testimonios">
   <div class="inner">
+    <p class="section-label">Lo que dicen</p>
+    <h2 class="section-title">Productores que confian en AGV</h2>
+    <div class="section-divider"></div>
+    <div class="test-grid">
+      <div class="test-card reveal">
+        <div class="test-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="test-text">"Con AGROVERDE el proceso es rapido y transparente. Llego, peso, y me pagan el mismo dia. Sin complicaciones."</p>
+        <div class="test-author">
+          <div class="test-avatar">JM</div>
+          <div>
+            <div class="test-name">Juan Martinez</div>
+            <div class="test-zona">Villa Riva, Duarte</div>
+          </div>
+        </div>
+      </div>
+      <div class="test-card reveal">
+        <div class="test-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="test-text">"El mejor precio del mercado y sin complicaciones. Llevo 3 cosechas vendiendo aqui y siempre me tratan bien."</p>
+        <div class="test-author">
+          <div class="test-avatar">RP</div>
+          <div>
+            <div class="test-name">Rafael Perez</div>
+            <div class="test-zona">Nagua, Maria T. Sanchez</div>
+          </div>
+        </div>
+      </div>
+      <div class="test-card reveal">
+        <div class="test-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="test-text">"La calculadora de la web me ayuda a saber cuanto voy a cobrar antes de llegar. Muy util para el productor."</p>
+        <div class="test-author">
+          <div class="test-avatar">CR</div>
+          <div>
+            <div class="test-name">Carlos Rodriguez</div>
+            <div class="test-zona">Sanchez Ramirez</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gustamos">
+  <div class="inner reveal">
     <p class="section-label">Nuestra pasion</p>
     <h2 class="section-title">Que nos gusta hacer</h2>
     <div class="section-divider" style="background:linear-gradient(90deg,#c8a84b,#4caf50);"></div>
@@ -300,8 +394,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <p class="section-label">Actividad principal</p>
     <h2 class="section-title">Compra de arroz</h2>
     <div class="section-divider"></div>
-    <p style="color:#555;font-size:1.05rem;line-height:1.9;max-width:800px;">En AGROVERDE compramos arroz directamente al productor con un proceso transparente, justo y agil. Trabajamos con las principales variedades del mercado dominicano, garantizando una experiencia de venta confiable y sin complicaciones.</p>
-    <div class="variedades-grid">
+    <p style="color:#555;font-size:1.05rem;line-height:1.9;max-width:800px;">En AGROVERDE compramos arroz directamente al productor con un proceso transparente, justo y agil. Trabajamos con las principales variedades del mercado dominicano.</p>
+    <div class="variedades-grid reveal">
       <div class="variedad-card"><span class="variedad-icon">&#127806;</span><div class="variedad-nombre">Lucero</div></div>
       <div class="variedad-card"><span class="variedad-icon">&#127806;</span><div class="variedad-nombre">Guri</div></div>
       <div class="variedad-card"><span class="variedad-icon">&#127806;</span><div class="variedad-nombre">Jaragua</div></div>
@@ -310,7 +404,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <div class="variedad-card"><span class="variedad-icon">&#127806;</span><div class="variedad-nombre">Torazo</div></div>
       <div class="variedad-card"><span class="variedad-icon">&#127806;</span><div class="variedad-nombre">Entre otras</div></div>
     </div>
-    <div class="proceso-steps">
+    <div class="proceso-steps reveal">
       <div class="paso"><div class="paso-num">1</div><h4>Recepcion</h4><p>El productor llega con su cosecha y es atendido de inmediato por nuestro equipo.</p></div>
       <div class="paso"><div class="paso-num">2</div><h4>Pesaje</h4><p>Se realiza el pesaje en bascula certificada para determinar los kilos netos.</p></div>
       <div class="paso"><div class="paso-num">3</div><h4>Humedad</h4><p>Se mide el porcentaje de humedad del arroz para calcular las fanegas correctas.</p></div>
@@ -352,6 +446,42 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <div class="resultado-grid">
           <div class="resultado-item destacado"><div class="r-label">Total Fanegas</div><div class="r-value" id="res-fanegas">-</div></div>
           <div class="resultado-item destacado"><div class="r-label">Valor Factura AGV</div><div class="r-value" id="res-valor">-</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOTICIAS / TIPS -->
+<section id="noticias">
+  <div class="inner">
+    <p class="section-label">Tips del campo</p>
+    <h2 class="section-title">Informacion para el productor</h2>
+    <div class="section-divider"></div>
+    <p style="color:#666;font-size:1.05rem;line-height:1.9;">Guias tecnicas y recomendaciones del equipo de AGROVERDE para maximizar tu cosecha.</p>
+    <div class="news-grid">
+      <div class="news-card reveal">
+        <div class="news-img">&#129432;</div>
+        <div class="news-body">
+          <div class="news-tag">Plagas</div>
+          <div class="news-titulo">Como controlar plagas en la siembra directa de arroz</div>
+          <div class="news-fecha">Junio 2026</div>
+        </div>
+      </div>
+      <div class="news-card reveal">
+        <div class="news-img">&#128167;</div>
+        <div class="news-body">
+          <div class="news-tag">Fertilizacion</div>
+          <div class="news-titulo">Manejo del agua y fertilizacion en etapa de macollamiento</div>
+          <div class="news-fecha">Mayo 2026</div>
+        </div>
+      </div>
+      <div class="news-card reveal">
+        <div class="news-img">&#128200;</div>
+        <div class="news-body">
+          <div class="news-tag">Mercado</div>
+          <div class="news-titulo">Comportamiento del precio del arroz en el primer semestre 2026</div>
+          <div class="news-fecha">Abril 2026</div>
         </div>
       </div>
     </div>
@@ -453,31 +583,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <script>
 // MENU MOVIL
-function toggleNav(){
-  var menu = document.getElementById('navMenu');
-  var btn  = document.getElementById('navToggle');
-  var isOpen = menu.classList.toggle('open');
-  btn.classList.toggle('open', isOpen);
-  btn.setAttribute('aria-expanded', isOpen);
-}
-function closeNav(){
-  var menu = document.getElementById('navMenu');
-  var btn  = document.getElementById('navToggle');
-  menu.classList.remove('open');
-  btn.classList.remove('open');
-  btn.setAttribute('aria-expanded', false);
-}
+function toggleNav(){var menu=document.getElementById('navMenu');var btn=document.getElementById('navToggle');var isOpen=menu.classList.toggle('open');btn.classList.toggle('open',isOpen);btn.setAttribute('aria-expanded',isOpen);}
+function closeNav(){var menu=document.getElementById('navMenu');var btn=document.getElementById('navToggle');menu.classList.remove('open');btn.classList.remove('open');btn.setAttribute('aria-expanded',false);}
 
+// SLIDER
 var current=0,total=12;
 var autoTimer=setInterval(function(){changeSlide(1);},3500);
 function changeSlide(dir){current=(current+dir+total)%total;updateSlider();resetTimer();}
 function goToSlide(n){current=n;updateSlider();resetTimer();}
-function updateSlider(){
-  document.getElementById('slides').style.transform='translateX(-'+current*100+'%)';
-  var dots=document.querySelectorAll('.dot');
-  for(var i=0;i<dots.length;i++){dots[i].classList.toggle('active',i===current);}
-}
+function updateSlider(){document.getElementById('slides').style.transform='translateX(-'+current*100+'%)';var dots=document.querySelectorAll('.dot');for(var i=0;i<dots.length;i++){dots[i].classList.toggle('active',i===current);}}
 function resetTimer(){clearInterval(autoTimer);autoTimer=setInterval(function(){changeSlide(1);},3500);}
+
+// CALCULADORA
 function calcularPesada(){
   var variedad=document.getElementById('calc-variedad').value;
   var kilos=parseFloat(document.getElementById('kilos').value);
@@ -496,117 +613,93 @@ function calcularPesada(){
   res.classList.add('visible');
   res.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
+
+// WHATSAPP
 function enviarWhatsApp(){
   var nombre=document.getElementById('nombre').value.trim();
   var tipo=document.getElementById('tipo').value;
   var mensaje=document.getElementById('mensaje').value.trim();
   if(!nombre||!mensaje){alert('Por favor completa tu nombre y mensaje.');return;}
   var texto='Hola AGROVERDE, soy *'+nombre+'*.\n\n*'+tipo+':*\n'+mensaje;
-  var url='https://wa.me/18094899215?text='+encodeURIComponent(texto);
-  window.open(url,'_blank');
+  window.open('https://wa.me/18094899215?text='+encodeURIComponent(texto),'_blank');
 }
+
+// ESTADISTICAS ANIMADAS
+function animarContador(id, target, suffix) {
+  var start = 0;
+  var el = document.getElementById(id);
+  var step = target / 60;
+  var timer = setInterval(function() {
+    start = Math.min(start + step, target);
+    el.textContent = Math.floor(start).toLocaleString() + (suffix || '');
+    if (start >= target) clearInterval(timer);
+  }, 25);
+}
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    animarContador('stat-productores', 430, '+');
+    animarContador('stat-anos', 5, '');
+    animarContador('stat-variedades', 7, '');
+  }, 400);
+  cargarKgComprados();
+});
+
+async function cargarKgComprados() {
+  try {
+    var res = await fetch(SUPA_URL+'/rest/v1/estadisticas_web?id=eq.1', {
+      headers: {'apikey': SUPA_KEY, 'Authorization': 'Bearer '+SUPA_KEY}
+    });
+    var data = await res.json();
+    if (Array.isArray(data) && data.length > 0 && data[0].kg_comprados) {
+      animarContador('stat-kg', data[0].kg_comprados, '+');
+    } else {
+      document.getElementById('stat-kg').textContent = '—';
+    }
+  } catch(e) {
+    document.getElementById('stat-kg').textContent = '—';
+  }
+}
+
+// SUPABASE CONFIG
+var SUPA_URL = "https://qilvrvnwdtpbkcfwktqs.supabase.co";
+var SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpbHZydm53ZHRwYmtjZndrdHFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyMjI3MDcsImV4cCI6MjA5Njc5ODcwN30.kf0jV-496fzXziaPYbsjn5obV6-JUXAXW4hRMDUM6WU";
+
+// SCROLL REVEAL
+var revealEls = document.querySelectorAll('.reveal');
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, {threshold: 0.12});
+revealEls.forEach(function(el) { observer.observe(el); });
 
 // CHATBOT
 var chatOpen = false;
 var chatHistory = [];
-var SYSTEM_PROMPT = `Eres el asistente virtual oficial de AGROVERDE AGV SRL. Tu nombre es "Asistente AGROVERDE". Eres autonomo, amable y profesional.
+var SYSTEM_PROMPT = 'Eres el asistente virtual oficial de AGROVERDE AGV SRL. Tu nombre es "Asistente AGROVERDE". Eres autonomo, amable y profesional.\n\n=== INFORMACION DE LA EMPRESA ===\n- Nombre: AGROVERDE AGV SRL\n- Ubicacion: Villa Riva, Republica Dominicana\n- WhatsApp: 809-489-9215\n- Instagram: @Agroverderd\n- Web: agroverdeagv.com\n\n=== SERVICIOS ===\n1. COMPRA DE ARROZ: Compramos todas las variedades directamente al productor.\n2. INSUMOS AGRICOLAS: Vendemos todos los insumos agricolas.\n3. FINANCIAMIENTO: Evaluamos las tierras del productor y procedemos a financiar.\n4. LOGISTICA Y TRANSPORTE: Carga y transporte agricola.\n5. CALCULADORA DE PESADA: Fanegas = Kilos Neto / % Humedad. Valor = Fanegas x Precio por Fanega.\n\n=== REGLAS ===\n- Responde SIEMPRE en espanol dominicano, amable y profesional.\n- NUNCA inventes precios ni condiciones especificas.\n- Si el usuario muestra interes, invitalo a contactar al 809-489-9215.\n- Se breve, maximo 3-4 oraciones.';
 
-=== INFORMACION DE LA EMPRESA ===
-- Nombre: AGROVERDE AGV SRL
-- Ubicacion: Villa Riva, Republica Dominicana
-- WhatsApp: 809-489-9215
-- Instagram: @Agroverderd
-- Web: agroverdeagv.com
-
-=== SERVICIOS ===
-1. COMPRA DE ARROZ: Compramos todas las variedades directamente al productor: Lucero, Guri, Jaragua, Quisquella, Robusta, Torazo y otras. Proceso transparente: recepcion, pesaje, medicion de humedad y liquidacion inmediata.
-2. INSUMOS AGRICOLAS: Vendemos todos los insumos agricolas para cosechas de todos los frutos y cereales.
-3. FINANCIAMIENTO: Evaluamos las tierras del productor, verificamos que todo este en orden y procedemos a financiar. El interesado debe contactarnos o visitarnos.
-4. LOGISTICA Y TRANSPORTE: Carga y transporte agricola.
-5. CALCULADORA DE PESADA: En nuestra web el productor puede calcular fanegas y valor de factura. Formula: Fanegas = Kilos Neto / % Humedad. Valor = Fanegas x Precio por Fanega.
-
-=== REGLAS DE COMPORTAMIENTO ===
-- Responde SIEMPRE en espanol dominicano, de forma amable, clara y profesional.
-- Puedes responder cualquier pregunta relacionada con agricultura, arroz, insumos, financiamiento o la empresa.
-- Si el usuario pregunta algo que no sabes con certeza, dilo honestamente y dirige al WhatsApp 809-489-9215.
-- NUNCA inventes precios, cifras, condiciones de financiamiento ni datos que no te hayan dado.
-- NUNCA hagas comentarios negativos sobre competidores ni otras empresas.
-- NUNCA digas nada que pueda perjudicar la imagen o reputacion de AGROVERDE.
-- NUNCA hagas promesas de precios, plazos o condiciones especificas sin que el usuario consulte directamente con la empresa.
-- Si alguien hace preguntas fuera del tema agricola o de la empresa (politica, religion, temas personales, etc.), responde amablemente que solo puedes ayudar con temas relacionados a AGROVERDE y la agricultura.
-- Si el usuario muestra interes en hacer negocio, siempre invitalo a contactar por WhatsApp al 809-489-9215 o visitar en Villa Riva.
-- Sé breve y directo. Maximo 3-4 oraciones por respuesta salvo que el tema lo requiera.
-- Termina siempre con disposicion a seguir ayudando o con la invitacion a contactar.`;
-
-function toggleChat(){
-  chatOpen = !chatOpen;
-  var box = document.getElementById('chatBox');
-  box.classList.toggle('open', chatOpen);
-  if(chatOpen && chatHistory.length === 0){
-    addMessage('bot', 'Hola! Soy el asistente de AGROVERDE AGV. Puedo ayudarte con informacion sobre compra de arroz, insumos agricolas, financiamiento y nuestra calculadora de pesada. Como puedo ayudarte hoy?');
-  }
-  if(chatOpen){ document.getElementById('chatInput').focus(); }
-}
-
-function addMessage(type, text){
-  var msgs = document.getElementById('chatMessages');
-  var div = document.createElement('div');
-  div.className = 'msg ' + type;
-  div.textContent = text;
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-  return div;
-}
-
-function showTyping(){
-  var msgs = document.getElementById('chatMessages');
-  var div = document.createElement('div');
-  div.className = 'msg typing';
-  div.id = 'typingIndicator';
-  div.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-function removeTyping(){
-  var t = document.getElementById('typingIndicator');
-  if(t) t.remove();
-}
-
+function toggleChat(){chatOpen=!chatOpen;var box=document.getElementById('chatBox');box.classList.toggle('open',chatOpen);if(chatOpen&&chatHistory.length===0){addMessage('bot','Hola! Soy el asistente de AGROVERDE AGV. Como puedo ayudarte hoy?');}if(chatOpen){document.getElementById('chatInput').focus();}}
+function addMessage(type,text){var msgs=document.getElementById('chatMessages');var div=document.createElement('div');div.className='msg '+type;div.textContent=text;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;return div;}
+function showTyping(){var msgs=document.getElementById('chatMessages');var div=document.createElement('div');div.className='msg typing';div.id='typingIndicator';div.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
+function removeTyping(){var t=document.getElementById('typingIndicator');if(t)t.remove();}
 async function sendMessage(){
-  var input = document.getElementById('chatInput');
-  var text = input.value.trim();
-  if(!text) return;
-  input.value = '';
-  addMessage('user', text);
-  chatHistory.push({role:'user', content:text});
-  showTyping();
-  try {
-    var response = await fetch('https://agroverdeweb.vercel.app/api/chat', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 400,
-        system: SYSTEM_PROMPT,
-        messages: chatHistory
-      })
-    });
-    var data = await response.json();
-    removeTyping();
-    var reply = data.content && data.content[0] ? data.content[0].text : 'Lo siento, hubo un error. Contactanos al 809-489-9215.';
-    addMessage('bot', reply);
-    chatHistory.push({role:'assistant', content:reply});
-    if(chatHistory.length > 20){ chatHistory = chatHistory.slice(-20); }
-  } catch(e) {
-    removeTyping();
-    addMessage('bot', 'Lo siento, hubo un problema de conexion. Contactanos directamente al WhatsApp 809-489-9215.');
-  }
+  var input=document.getElementById('chatInput');var text=input.value.trim();if(!text)return;
+  input.value='';addMessage('user',text);chatHistory.push({role:'user',content:text});showTyping();
+  try{
+    var response=await fetch('https://agroverdeweb.vercel.app/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:SYSTEM_PROMPT,messages:chatHistory})});
+    var data=await response.json();removeTyping();
+    var reply=data.content&&data.content[0]?data.content[0].text:'Lo siento, hubo un error. Contactanos al 809-489-9215.';
+    addMessage('bot',reply);chatHistory.push({role:'assistant',content:reply});
+    if(chatHistory.length>20){chatHistory=chatHistory.slice(-20);}
+  }catch(e){removeTyping();addMessage('bot','Lo siento, hubo un problema de conexion. Contactanos al WhatsApp 809-489-9215.');}
 }
 </script>
 
 <!-- CHATBOT FAB -->
-<button class="chat-fab" onclick="toggleChat()" id="chatFab" title="Asistente AGROVERDE">
+<button class="chat-fab" onclick="toggleChat()" title="Asistente AGROVERDE">
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
   </svg>
@@ -615,7 +708,7 @@ async function sendMessage(){
 
 <div class="chat-box" id="chatBox">
   <div class="chat-header">
-    <div class="chat-avatar">🌾</div>
+    <div class="chat-avatar">&#127806;</div>
     <div class="chat-header-info">
       <h4>Asistente AGROVERDE</h4>
       <span>&#9679; En linea ahora</span>
