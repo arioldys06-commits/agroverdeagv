@@ -426,6 +426,11 @@
           Visible en la web
         </label>
       </div>
+      <div class="form-group">
+        <label>Artículo completo</label>
+        <textarea id="tip-articulo" style="height:220px;" placeholder="Escribe aquí el contenido completo del tip. Esto es lo que verá el productor al hacer clic en la tarjeta desde la web."></textarea>
+        <small>Opcional — si lo dejas vacío, la tarjeta en la web no será clicable.</small>
+      </div>
     </div>
     <div class="modal-footer">
       <button class="btn-cancel" onclick="cerrarModal('modal-tip')">Cancelar</button>
@@ -915,6 +920,7 @@ function abrirModalTip(tip=null) {
   document.getElementById('tip-fecha').value = tip ? (tip.fecha || '') : '';
   document.getElementById('tip-orden').value = tip ? (tip.orden ?? '') : '';
   document.getElementById('tip-activo').checked = tip ? !!tip.activo : true;
+  document.getElementById('tip-articulo').value = tip ? (tip.articulo || '') : '';
   document.getElementById('modal-tip-title').textContent = tip ? 'Editar Tip' : 'Nuevo Tip';
   abrirModal('modal-tip');
 }
@@ -932,6 +938,7 @@ async function guardarTip() {
     fecha: document.getElementById('tip-fecha').value.trim(),
     orden: parseInt(document.getElementById('tip-orden').value) || 99,
     activo: document.getElementById('tip-activo').checked,
+    articulo: document.getElementById('tip-articulo').value.trim(),
   };
   const btn = document.getElementById('btn-save-tip');
   btn.disabled = true; btn.textContent = 'Guardando...';
