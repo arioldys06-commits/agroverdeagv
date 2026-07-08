@@ -110,6 +110,21 @@
   .img-preview{margin-top:10px;width:100%;height:140px;object-fit:cover;border-radius:8px;border:2px solid var(--border);display:none;}
   .img-preview.show{display:block;}
 
+  /* GALERIA GRID */
+  .gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px;}
+  .gal-card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.07);}
+  .gal-card img{width:100%;height:150px;object-fit:cover;display:block;background:var(--green-pale);}
+  .gal-card-body{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .gal-orden-input{width:56px;padding:6px 8px;border:2px solid var(--border);border-radius:6px;text-align:center;font-weight:700;font-size:13px;}
+  .gal-orden-input:focus{outline:none;border-color:var(--green-main);}
+  .gal-card.inactivo{opacity:0.45;}
+  .gal-toggle{background:none;border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;color:#666;}
+  .gal-toggle:hover{border-color:var(--green-main);color:var(--green-dark);}
+  .gal-del{background:#fff0f0;color:var(--red);border:1px solid #fca5a5;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;}
+  .gal-del:hover{background:var(--red);color:white;}
+  .upload-wrap-galeria{border:2px dashed var(--border);border-radius:12px;padding:36px;text-align:center;cursor:pointer;transition:all 0.3s;background:white;margin-bottom:24px;}
+  .upload-wrap-galeria:hover,.upload-wrap-galeria.dragover{border-color:var(--green-main);background:var(--green-pale);}
+
   @media(max-width:768px){
     header{padding:0 16px;}
     .admin-content{padding:16px;}
@@ -142,14 +157,15 @@
       <span class="header-title">Panel Administrativo</span>
     </div>
     <div class="header-right">
-      <a href="recomendaciones.html" target="_blank" class="btn-ver-pub">Ver página pública →</a>
+      <a href="index.html" target="_blank" class="btn-ver-pub">Ver página pública →</a>
       <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
     </div>
   </header>
 
   <div class="admin-tabs">
-    <button class="atab active" onclick="showPanel('rec')">🌾 Recomendaciones</button>
-    <button class="atab" onclick="showPanel('pat')">⭐ Patrocinadores</button>
+    <button class="atab active" onclick="showPanel('rec', event)">🌾 Recomendaciones</button>
+    <button class="atab" onclick="showPanel('pat', event)">⭐ Patrocinadores</button>
+    <button class="atab" onclick="showPanel('gal', event)">🖼️ Galería</button>
   </div>
 
   <div class="admin-content">
@@ -200,6 +216,28 @@
             <tr class="empty-row"><td colspan="5">Cargando...</td></tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- PANEL GALERIA -->
+    <div id="panel-gal" class="panel">
+      <div class="panel-header">
+        <h2>Galería de Fotos</h2>
+      </div>
+      <div class="upload-wrap-galeria" id="upload-wrap-gal" onclick="document.getElementById('gal-file').click()">
+        <div class="upload-icon">📁</div>
+        <div class="upload-text">Haz clic para subir una o varias fotos</div>
+        <div class="upload-sub">JPG, PNG, WEBP — máx 5MB cada una · se agregan directo a la web, sin subir nada a GitHub</div>
+      </div>
+      <input type="file" id="gal-file" accept="image/jpeg,image/png,image/webp,image/gif" multiple style="display:none" onchange="onGalFileSelect(this)">
+      <div id="gal-upload-progress" style="display:none;margin-bottom:20px;">
+        <div style="height:4px;background:#e5e7eb;border-radius:2px;overflow:hidden;">
+          <div id="gal-progress-bar" style="height:100%;width:0%;background:var(--green-main);transition:width 0.3s;"></div>
+        </div>
+        <small style="color:#666;margin-top:4px;display:block;" id="gal-progress-text">Subiendo...</small>
+      </div>
+      <div class="gal-grid" id="gal-grid">
+        <div style="grid-column:1/-1;text-align:center;padding:48px;color:#aaa;">Cargando...</div>
       </div>
     </div>
 
@@ -326,6 +364,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
+// ── Backend de Recomendaciones / Patrocinadores ──────────────────
 const SUPA_URL = "https://qilvrvnwdtpbkcfwktqs.supabase.co";
 const SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpbHZydm53ZHRwYmtjZndrdHFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyMjI3MDcsImV4cCI6MjA5Njc5ODcwN30.kf0jV-496fzXziaPYbsjn5obV6-JUXAXW4hRMDUM6WU";
 const ADMIN_PASS = "8094575114";
@@ -333,6 +372,16 @@ const ADMIN_PASS = "8094575114";
 const headers = {
   'apikey': SUPA_KEY,
   'Authorization': 'Bearer ' + SUPA_KEY,
+  'Content-Type': 'application/json',
+  'Prefer': 'return=representation'
+};
+
+// ── Backend de la Galería (proyecto distinto: el mismo que usa index.html) ──
+const GAL_URL = "https://fykgeclufilwsvpdslmm.supabase.co";
+const GAL_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5a2dlY2x1Zmlsd3N2cGRzbG1tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyNjM4NzYsImV4cCI6MjA5NzgzOTg3Nn0.1dRbAG-gvbzMDl49qVW-GYrkt5bhQhBHqvMUG402vyQ";
+const galHeaders = {
+  'apikey': GAL_KEY,
+  'Authorization': 'Bearer ' + GAL_KEY,
   'Content-Type': 'application/json',
   'Prefer': 'return=representation'
 };
@@ -345,6 +394,7 @@ function verificarPass() {
     document.getElementById('admin-screen').style.display = 'block';
     cargarRec();
     cargarPat();
+    cargarGaleria();
   } else {
     document.getElementById('login-error').style.display = 'block';
     document.getElementById('pwd-input').value = '';
@@ -358,11 +408,11 @@ function logout() {
 }
 
 // ── TABS ──────────────────────────────────────────────────────
-function showPanel(panel) {
+function showPanel(panel, evt) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.atab').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + panel).classList.add('active');
-  event.target.classList.add('active');
+  if (evt && evt.target) evt.target.classList.add('active');
 }
 
 // ── TOAST ─────────────────────────────────────────────────────
@@ -522,12 +572,10 @@ async function onFileSelect(input) {
   if (!file) return;
   if (file.size > 5 * 1024 * 1024) { showToast('Imagen muy grande — máx 5MB', true); return; }
 
-  // Mostrar preview local inmediato
   const reader = new FileReader();
   reader.onload = e => previewImg(e.target.result);
   reader.readAsDataURL(file);
 
-  // Mostrar barra de progreso
   document.getElementById('upload-progress').style.display = 'block';
   document.getElementById('progress-bar').style.width = '30%';
   document.getElementById('progress-text').textContent = 'Subiendo imagen...';
@@ -535,15 +583,14 @@ async function onFileSelect(input) {
   try {
     const ext      = file.name.split('.').pop();
     const fileName = `pat_${Date.now()}.${ext}`;
-    const STORAGE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpbHZydm53ZHRwYmtjZndrdHFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyMjI3MDcsImV4cCI6MjA5Njc5ODcwN30.kf0jV-496fzXziaPYbsjn5obV6-JUXAXW4hRMDUM6WU";
 
     document.getElementById('progress-bar').style.width = '60%';
 
     const res = await fetch(`${SUPA_URL}/storage/v1/object/patrocinadores/${fileName}`, {
       method: 'POST',
       headers: {
-        'apikey': STORAGE_KEY,
-        'Authorization': 'Bearer ' + STORAGE_KEY,
+        'apikey': SUPA_KEY,
+        'Authorization': 'Bearer ' + SUPA_KEY,
         'Content-Type': file.type,
         'x-upsert': 'true'
       },
@@ -557,7 +604,6 @@ async function onFileSelect(input) {
       throw new Error(err.message || res.status);
     }
 
-    // URL pública de la imagen
     const publicUrl = `${SUPA_URL}/storage/v1/object/public/patrocinadores/${fileName}`;
     document.getElementById('pat-imagen').value = publicUrl;
     previewImg(publicUrl);
@@ -608,6 +654,146 @@ async function eliminarPat(id) {
   await fetch(`${SUPA_URL}/rest/v1/patrocinadores_arroz?id=eq.${id}`, { method:'DELETE', headers });
   showToast('🗑️ Patrocinador eliminado');
   cargarPat();
+}
+
+// ════════════════════════════════════════════════════════════
+// GALERIA
+// ════════════════════════════════════════════════════════════
+async function cargarGaleria() {
+  const res = await fetch(`${GAL_URL}/rest/v1/galeria_web?order=orden.asc,created_at.asc`, { headers: galHeaders });
+  const data = await res.json();
+  if (!res.ok) { showToast('Error cargando galería: ' + (data.message || res.status), true); return; }
+  renderGaleria(Array.isArray(data) ? data : []);
+}
+
+function resolverUrlImagen(url) {
+  // Las fotos originales (g1.jpg...g12.jpg) son rutas relativas del sitio.
+  // Las nuevas subidas desde este panel ya vienen como URL pública completa de Supabase.
+  if (url.startsWith('http')) return url;
+  return url; // relativa: el navegador la resuelve contra la carpeta del sitio público
+}
+
+function renderGaleria(lista) {
+  const grid = document.getElementById('gal-grid');
+  if (!lista || lista.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:#aaa;">No hay fotos en la galería todavía.</div>';
+    return;
+  }
+  grid.innerHTML = lista.map(g => `
+    <div class="gal-card ${g.activo ? '' : 'inactivo'}" data-id="${g.id}">
+      <img src="${resolverUrlImagen(g.imagen_url)}" alt="Foto galería" loading="lazy">
+      <div class="gal-card-body">
+        <input type="number" class="gal-orden-input" value="${g.orden ?? 99}" min="1"
+          onchange="actualizarOrdenGaleria(${g.id}, this.value)" title="Orden">
+        <button class="gal-toggle" onclick="toggleActivoGaleria(${g.id}, ${g.activo})">${g.activo ? 'Ocultar' : 'Mostrar'}</button>
+        <button class="gal-del" onclick="eliminarGaleria(${g.id}, '${(g.imagen_url||'').replace(/'/g,"\\'")}')">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function onGalFileSelect(input) {
+  const files = Array.from(input.files || []);
+  if (files.length === 0) return;
+
+  const progressWrap = document.getElementById('gal-upload-progress');
+  const bar = document.getElementById('gal-progress-bar');
+  const text = document.getElementById('gal-progress-text');
+  progressWrap.style.display = 'block';
+
+  // Traer el orden máximo actual para agregar las nuevas fotos al final
+  let ordenActual = 0;
+  try {
+    const res = await fetch(`${GAL_URL}/rest/v1/galeria_web?select=orden&order=orden.desc&limit=1`, { headers: galHeaders });
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0) ordenActual = data[0].orden || 0;
+  } catch(e) {}
+
+  let subidas = 0;
+  for (const file of files) {
+    if (file.size > 5 * 1024 * 1024) {
+      showToast(`"${file.name}" pesa más de 5MB, se omitió`, true);
+      continue;
+    }
+    text.textContent = `Subiendo ${file.name}... (${subidas + 1}/${files.length})`;
+    bar.style.width = Math.round(((subidas) / files.length) * 100) + '%';
+
+    try {
+      const ext = file.name.split('.').pop();
+      const fileName = `gal_${Date.now()}_${Math.random().toString(36).slice(2,8)}.${ext}`;
+
+      const upRes = await fetch(`${GAL_URL}/storage/v1/object/galeria/${fileName}`, {
+        method: 'POST',
+        headers: {
+          'apikey': GAL_KEY,
+          'Authorization': 'Bearer ' + GAL_KEY,
+          'Content-Type': file.type,
+          'x-upsert': 'true'
+        },
+        body: file
+      });
+
+      if (!upRes.ok) {
+        const err = await upRes.json();
+        throw new Error(err.message || upRes.status);
+      }
+
+      const publicUrl = `${GAL_URL}/storage/v1/object/public/galeria/${fileName}`;
+      ordenActual += 1;
+
+      await fetch(`${GAL_URL}/rest/v1/galeria_web`, {
+        method: 'POST',
+        headers: galHeaders,
+        body: JSON.stringify({ imagen_url: publicUrl, orden: ordenActual, activo: true })
+      });
+
+      subidas++;
+    } catch(e) {
+      showToast(`Error subiendo "${file.name}": ${e.message}`, true);
+    }
+  }
+
+  bar.style.width = '100%';
+  text.textContent = `✅ ${subidas} de ${files.length} foto(s) subida(s)`;
+  setTimeout(() => { progressWrap.style.display = 'none'; bar.style.width = '0%'; }, 2500);
+
+  input.value = '';
+  showToast(`✅ ${subidas} foto(s) agregada(s) a la galería`);
+  cargarGaleria();
+}
+
+async function actualizarOrdenGaleria(id, nuevoOrden) {
+  await fetch(`${GAL_URL}/rest/v1/galeria_web?id=eq.${id}`, {
+    method: 'PATCH', headers: galHeaders,
+    body: JSON.stringify({ orden: parseInt(nuevoOrden) || 99 })
+  });
+  showToast('✅ Orden actualizado');
+}
+
+async function toggleActivoGaleria(id, activoActual) {
+  await fetch(`${GAL_URL}/rest/v1/galeria_web?id=eq.${id}`, {
+    method: 'PATCH', headers: galHeaders,
+    body: JSON.stringify({ activo: !activoActual })
+  });
+  cargarGaleria();
+}
+
+async function eliminarGaleria(id, imagenUrl) {
+  if (!confirm('¿Eliminar esta foto de la galería?')) return;
+  try {
+    // Si la imagen vive en Supabase Storage (no es una ruta relativa g1.jpg, etc), borrarla también del bucket
+    if (imagenUrl && imagenUrl.includes('/storage/v1/object/public/galeria/')) {
+      const fileName = imagenUrl.split('/storage/v1/object/public/galeria/')[1];
+      await fetch(`${GAL_URL}/storage/v1/object/galeria/${fileName}`, {
+        method: 'DELETE',
+        headers: { 'apikey': GAL_KEY, 'Authorization': 'Bearer ' + GAL_KEY }
+      });
+    }
+  } catch(e) { /* si falla el borrado del archivo, igual seguimos borrando el registro */ }
+
+  await fetch(`${GAL_URL}/rest/v1/galeria_web?id=eq.${id}`, { method: 'DELETE', headers: galHeaders });
+  showToast('🗑️ Foto eliminada');
+  cargarGaleria();
 }
 </script>
 </body>
