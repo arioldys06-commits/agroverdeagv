@@ -171,6 +171,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .news-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:40px;}
   .news-card{background:var(--gray-light);border-radius:12px;overflow:hidden;border:1px solid var(--green-pale);transition:all 0.3s;}
   .news-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(45,122,45,0.12);}
+  .news-card.clickable{cursor:pointer;}
+  .news-card.clickable:hover{border-color:var(--green-light);}
+  .news-readmore{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--green-main);margin-top:10px;display:inline-flex;align-items:center;gap:4px;}
+
+  /* MODAL ARTICULO */
+  .articulo-overlay{display:none;position:fixed;inset:0;background:rgba(10,30,10,0.7);z-index:400;align-items:center;justify-content:center;padding:20px;}
+  .articulo-overlay.open{display:flex;}
+  .articulo-modal{background:white;border-radius:16px;width:100%;max-width:640px;max-height:85vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,0.4);}
+  .articulo-header{padding:28px 32px 20px;border-bottom:1px solid var(--green-pale);position:relative;}
+  .articulo-emoji{font-size:2.4rem;margin-bottom:10px;display:block;}
+  .articulo-tag{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--green-main);font-weight:700;margin-bottom:8px;}
+  .articulo-titulo{font-family:"Playfair Display",serif;font-size:1.6rem;color:var(--green-dark);line-height:1.3;margin-bottom:8px;}
+  .articulo-fecha{font-size:12px;color:#aaa;letter-spacing:1px;}
+  .articulo-close{position:absolute;top:24px;right:28px;background:none;border:none;font-size:24px;color:#999;cursor:pointer;line-height:1;}
+  .articulo-close:hover{color:#333;}
+  .articulo-body{padding:24px 32px 36px;font-size:1.02rem;line-height:1.9;color:#444;white-space:pre-wrap;}
   .news-img{height:110px;display:flex;align-items:center;justify-content:center;font-size:3rem;background:var(--green-pale);}
   .news-body{padding:20px;}
   .news-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--green-main);font-weight:700;margin-bottom:6px;}
@@ -691,6 +707,7 @@ var observer = new IntersectionObserver(function(entries) {
 revealEls.forEach(function(el) { observer.observe(el); });
 
 // NOTICIAS
+var noticiasData = [];
 async function cargarNoticias() {
   try {
     var res = await fetch(SUPA_URL+'/rest/v1/noticias_web?activo=eq.true&order=orden.asc', {
@@ -702,13 +719,16 @@ async function cargarNoticias() {
       grid.innerHTML = '<div style="text-align:center;padding:40px;color:#aaa;grid-column:1/-1;">No hay noticias disponibles.</div>';
       return;
     }
-    grid.innerHTML = data.map(function(n) {
-      return '<div class="news-card reveal">'+
+    noticiasData = data;
+    grid.innerHTML = data.map(function(n,i) {
+      var tieneArticulo = n.articulo && n.articulo.trim().length > 0;
+      return '<div class="news-card reveal'+(tieneArticulo?' clickable':'')+'"'+(tieneArticulo?' onclick="abrirArticulo('+i+')"':'')+'>'+
         '<div class="news-img">'+n.emoji+'</div>'+
         '<div class="news-body">'+
           '<div class="news-tag">'+n.categoria+'</div>'+
           '<div class="news-titulo">'+n.titulo+'</div>'+
           '<div class="news-fecha">'+n.fecha+'</div>'+
+          (tieneArticulo ? '<div class="news-readmore">Leer articulo &#8594;</div>' : '')+
         '</div>'+
       '</div>';
     }).join('');
@@ -717,6 +737,22 @@ async function cargarNoticias() {
   } catch(e) {
     document.getElementById('news-grid').innerHTML = '<div style="text-align:center;padding:40px;color:#aaa;grid-column:1/-1;">Error cargando noticias.</div>';
   }
+}
+
+function abrirArticulo(i) {
+  var n = noticiasData[i];
+  if (!n) return;
+  document.getElementById('articuloEmoji').textContent = n.emoji || '';
+  document.getElementById('articuloTag').textContent = n.categoria || '';
+  document.getElementById('articuloTitulo').textContent = n.titulo || '';
+  document.getElementById('articuloFecha').textContent = n.fecha || '';
+  document.getElementById('articuloBody').textContent = n.articulo || '';
+  document.getElementById('articuloOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function cerrarArticulo() {
+  document.getElementById('articuloOverlay').classList.remove('open');
+  document.body.style.overflow = '';
 }
 cargarNoticias();
 cargarGaleria();
@@ -742,6 +778,20 @@ async function sendMessage(){
   }catch(e){removeTyping();addMessage('bot','Lo siento, hubo un problema de conexion. Contactanos al WhatsApp 809-489-9215.');}
 }
 </script>
+
+<!-- MODAL ARTICULO -->
+<div class="articulo-overlay" id="articuloOverlay" onclick="if(event.target===this)cerrarArticulo()">
+  <div class="articulo-modal">
+    <div class="articulo-header">
+      <button class="articulo-close" onclick="cerrarArticulo()">&#10005;</button>
+      <span class="articulo-emoji" id="articuloEmoji"></span>
+      <div class="articulo-tag" id="articuloTag"></div>
+      <h3 class="articulo-titulo" id="articuloTitulo"></h3>
+      <div class="articulo-fecha" id="articuloFecha"></div>
+    </div>
+    <div class="articulo-body" id="articuloBody"></div>
+  </div>
+</div>
 
 <!-- CHATBOT FAB -->
 <button class="chat-fab" onclick="toggleChat()" title="Asistente AGROVERDE">
