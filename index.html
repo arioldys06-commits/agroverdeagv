@@ -490,29 +490,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <p style="color:#555;font-size:1.05rem;line-height:1.9;margin-bottom:8px;">Campos de arroz, logistica, transporte y momentos del proceso agricola de AGROVERDE.</p>
     <div class="slideshow-wrap">
       <div class="slides" id="slides">
-        <div class="slide"><img src="g1.jpg" alt="AGROVERDE"></div>
-        <div class="slide"><img src="g2.jpg" alt="AGROVERDE"></div>
-        <div class="slide"><img src="g3.jpg" alt="AGROVERDE"></div>
-        <div class="slide"><img src="g4.jpg" alt="AGROVERDE"></div>
-        <div class="slide"><img src="g5.jpg" alt="AGROVERDE"></div>
-        <div class="slide"><img src="g6.jpg" alt="AGROVERDE"></div>
-        <div class="slide"><img src="g7.jpg" alt="AGROVERDE"></div>
-        <div class="slide"><img src="g8.jpg" alt="AGROVERDE"></div>
-        <div class="slide"><img src="g9.jpg" alt="AGROVERDE"></div>
-        <div class="slide"><img src="g10.jpg" alt="AGROVERDE"></div>
-        <div class="slide"><img src="g11.jpg" alt="AGROVERDE"></div>
-        <div class="slide"><img src="g12.jpg" alt="AGROVERDE"></div>
+        <div class="slide"><div style="width:100%;height:300px;display:flex;align-items:center;justify-content:center;color:#888;">Cargando galería...</div></div>
       </div>
       <button class="slide-btn prev" onclick="changeSlide(-1)">&#8249;</button>
       <button class="slide-btn next" onclick="changeSlide(1)">&#8250;</button>
-      <div class="slide-dots" id="dots">
-        <div class="dot active" onclick="goToSlide(0)"></div><div class="dot" onclick="goToSlide(1)"></div>
-        <div class="dot" onclick="goToSlide(2)"></div><div class="dot" onclick="goToSlide(3)"></div>
-        <div class="dot" onclick="goToSlide(4)"></div><div class="dot" onclick="goToSlide(5)"></div>
-        <div class="dot" onclick="goToSlide(6)"></div><div class="dot" onclick="goToSlide(7)"></div>
-        <div class="dot" onclick="goToSlide(8)"></div><div class="dot" onclick="goToSlide(9)"></div>
-        <div class="dot" onclick="goToSlide(10)"></div><div class="dot" onclick="goToSlide(11)"></div>
-      </div>
+      <div class="slide-dots" id="dots"></div>
     </div>
   </div>
 </section>
@@ -580,13 +562,41 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 function toggleNav(){var menu=document.getElementById('navMenu');var btn=document.getElementById('navToggle');var isOpen=menu.classList.toggle('open');btn.classList.toggle('open',isOpen);btn.setAttribute('aria-expanded',isOpen);}
 function closeNav(){var menu=document.getElementById('navMenu');var btn=document.getElementById('navToggle');menu.classList.remove('open');btn.classList.remove('open');btn.setAttribute('aria-expanded',false);}
 
-// SLIDER
-var current=0,total=12;
-var autoTimer=setInterval(function(){changeSlide(1);},3500);
-function changeSlide(dir){current=(current+dir+total)%total;updateSlider();resetTimer();}
+// SLIDER (galeria dinamica desde Supabase)
+var current=0,total=0;
+var autoTimer=null;
+function changeSlide(dir){if(total===0)return;current=(current+dir+total)%total;updateSlider();resetTimer();}
 function goToSlide(n){current=n;updateSlider();resetTimer();}
 function updateSlider(){document.getElementById('slides').style.transform='translateX(-'+current*100+'%)';var dots=document.querySelectorAll('.dot');for(var i=0;i<dots.length;i++){dots[i].classList.toggle('active',i===current);}}
-function resetTimer(){clearInterval(autoTimer);autoTimer=setInterval(function(){changeSlide(1);},3500);}
+function resetTimer(){if(autoTimer)clearInterval(autoTimer);autoTimer=setInterval(function(){changeSlide(1);},3500);}
+
+async function cargarGaleria(){
+  try{
+    var res=await fetch(SUPA_URL+'/rest/v1/galeria_web?activo=eq.true&order=orden.asc,created_at.asc',{
+      headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}
+    });
+    var data=await res.json();
+    var slidesEl=document.getElementById('slides');
+    var dotsEl=document.getElementById('dots');
+    if(!Array.isArray(data)||data.length===0){
+      slidesEl.innerHTML='<div class="slide"><div style="width:100%;height:300px;display:flex;align-items:center;justify-content:center;color:#888;">Aun no hay fotos en la galeria.</div></div>';
+      dotsEl.innerHTML='';
+      total=0;
+      return;
+    }
+    slidesEl.innerHTML=data.map(function(g){
+      return '<div class="slide"><img src="'+g.imagen_url+'" alt="AGROVERDE" loading="lazy"></div>';
+    }).join('');
+    dotsEl.innerHTML=data.map(function(g,i){
+      return '<div class="dot'+(i===0?' active':'')+'" onclick="goToSlide('+i+')"></div>';
+    }).join('');
+    total=data.length;
+    current=0;
+    resetTimer();
+  }catch(e){
+    document.getElementById('slides').innerHTML='<div class="slide"><div style="width:100%;height:300px;display:flex;align-items:center;justify-content:center;color:#888;">Error cargando la galeria.</div></div>';
+  }
+}
 
 // CALCULADORA
 function calcularPesada(){
@@ -709,6 +719,7 @@ async function cargarNoticias() {
   }
 }
 cargarNoticias();
+cargarGaleria();
 
 // CHATBOT
 var chatOpen = false;
