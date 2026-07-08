@@ -166,6 +166,7 @@
     <button class="atab active" onclick="showPanel('rec', event)">🌾 Recomendaciones</button>
     <button class="atab" onclick="showPanel('pat', event)">⭐ Patrocinadores</button>
     <button class="atab" onclick="showPanel('gal', event)">🖼️ Galería</button>
+    <button class="atab" onclick="showPanel('tip', event)">📰 Tips del Campo</button>
   </div>
 
   <div class="admin-content">
@@ -238,6 +239,32 @@
       </div>
       <div class="gal-grid" id="gal-grid">
         <div style="grid-column:1/-1;text-align:center;padding:48px;color:#aaa;">Cargando...</div>
+      </div>
+    </div>
+
+    <!-- PANEL TIPS DEL CAMPO -->
+    <div id="panel-tip" class="panel">
+      <div class="panel-header">
+        <h2>Tips del Campo</h2>
+        <button class="btn-nuevo" onclick="abrirModalTip()">+ Nuevo Tip</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Emoji</th>
+              <th>Categoría</th>
+              <th>Título</th>
+              <th>Fecha</th>
+              <th>Orden</th>
+              <th>Visible</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tip-tbody">
+            <tr class="empty-row"><td colspan="7">Cargando...</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -360,6 +387,53 @@
   </div>
 </div>
 
+<!-- MODAL TIP DEL CAMPO -->
+<div class="modal-overlay" id="modal-tip">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-tip-title">Nuevo Tip</h3>
+      <button class="modal-close" onclick="cerrarModal('modal-tip')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="tip-id">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Categoría *</label>
+          <input type="text" id="tip-categoria" placeholder="Ej: Fertilizacion, Mercado, Plagas...">
+        </div>
+        <div class="form-group">
+          <label>Emoji</label>
+          <input type="text" id="tip-emoji" placeholder="🌾" maxlength="4">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Título *</label>
+        <input type="text" id="tip-titulo" placeholder="Ej: Manejo del agua en etapa de macollamiento">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Fecha a mostrar</label>
+          <input type="text" id="tip-fecha" placeholder="Ej: Julio 2026">
+        </div>
+        <div class="form-group">
+          <label>Orden de aparición</label>
+          <input type="number" id="tip-orden" placeholder="1, 2, 3..." min="1">
+        </div>
+      </div>
+      <div class="form-group">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <input type="checkbox" id="tip-activo" style="width:auto;" checked>
+          Visible en la web
+        </label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="cerrarModal('modal-tip')">Cancelar</button>
+      <button class="btn-save" id="btn-save-tip" onclick="guardarTip()">Guardar</button>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -395,6 +469,7 @@ function verificarPass() {
     cargarRec();
     cargarPat();
     cargarGaleria();
+    cargarTips();
   } else {
     document.getElementById('login-error').style.display = 'block';
     document.getElementById('pwd-input').value = '';
@@ -794,6 +869,99 @@ async function eliminarGaleria(id, imagenUrl) {
   await fetch(`${GAL_URL}/rest/v1/galeria_web?id=eq.${id}`, { method: 'DELETE', headers: galHeaders });
   showToast('🗑️ Foto eliminada');
   cargarGaleria();
+}
+
+// ════════════════════════════════════════════════════════════
+// TIPS DEL CAMPO (noticias_web)
+// ════════════════════════════════════════════════════════════
+async function cargarTips() {
+  const res = await fetch(`${GAL_URL}/rest/v1/noticias_web?order=orden.asc,created_at.desc`, { headers: galHeaders });
+  const data = await res.json();
+  if (!res.ok) { showToast('Error cargando tips: ' + (data.message || res.status), true); return; }
+  renderTablaTips(Array.isArray(data) ? data : []);
+}
+
+function renderTablaTips(lista) {
+  const tbody = document.getElementById('tip-tbody');
+  if (!lista || lista.length === 0) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="7">No hay tips todavía. Agrega el primero.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = lista.map(t => `
+    <tr>
+      <td style="font-size:20px;">${t.emoji || '📰'}</td>
+      <td><span class="badge-variedad">${t.categoria}</span></td>
+      <td><strong>${t.titulo}</strong></td>
+      <td>${t.fecha || '—'}</td>
+      <td>${t.orden ?? '—'}</td>
+      <td>
+        <button class="gal-toggle" onclick="toggleActivoTip(${t.id}, ${t.activo})">${t.activo ? '✅ Visible' : '🚫 Oculto'}</button>
+      </td>
+      <td>
+        <div class="td-actions">
+          <button class="btn-edit" onclick="editarTip(${JSON.stringify(t).replace(/"/g,'&quot;')})">Editar</button>
+          <button class="btn-del" onclick="eliminarTip(${t.id})">Eliminar</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function abrirModalTip(tip=null) {
+  document.getElementById('tip-id').value = tip ? tip.id : '';
+  document.getElementById('tip-categoria').value = tip ? tip.categoria : '';
+  document.getElementById('tip-emoji').value = tip ? (tip.emoji || '📰') : '📰';
+  document.getElementById('tip-titulo').value = tip ? tip.titulo : '';
+  document.getElementById('tip-fecha').value = tip ? (tip.fecha || '') : '';
+  document.getElementById('tip-orden').value = tip ? (tip.orden ?? '') : '';
+  document.getElementById('tip-activo').checked = tip ? !!tip.activo : true;
+  document.getElementById('modal-tip-title').textContent = tip ? 'Editar Tip' : 'Nuevo Tip';
+  abrirModal('modal-tip');
+}
+function editarTip(tip) { abrirModalTip(tip); }
+
+async function guardarTip() {
+  const categoria = document.getElementById('tip-categoria').value.trim();
+  const titulo = document.getElementById('tip-titulo').value.trim();
+  if (!categoria || !titulo) { showToast('Categoría y título son requeridos', true); return; }
+  const id = document.getElementById('tip-id').value;
+  const body = {
+    categoria,
+    titulo,
+    emoji: document.getElementById('tip-emoji').value.trim() || '📰',
+    fecha: document.getElementById('tip-fecha').value.trim(),
+    orden: parseInt(document.getElementById('tip-orden').value) || 99,
+    activo: document.getElementById('tip-activo').checked,
+  };
+  const btn = document.getElementById('btn-save-tip');
+  btn.disabled = true; btn.textContent = 'Guardando...';
+  try {
+    if (id) {
+      await fetch(`${GAL_URL}/rest/v1/noticias_web?id=eq.${id}`, { method:'PATCH', headers: galHeaders, body: JSON.stringify(body) });
+      showToast('✅ Tip actualizado');
+    } else {
+      await fetch(`${GAL_URL}/rest/v1/noticias_web`, { method:'POST', headers: galHeaders, body: JSON.stringify(body) });
+      showToast('✅ Tip agregado');
+    }
+    cerrarModal('modal-tip');
+    cargarTips();
+  } catch(e) { showToast('Error guardando', true); }
+  btn.disabled = false; btn.textContent = 'Guardar';
+}
+
+async function toggleActivoTip(id, activoActual) {
+  await fetch(`${GAL_URL}/rest/v1/noticias_web?id=eq.${id}`, {
+    method: 'PATCH', headers: galHeaders,
+    body: JSON.stringify({ activo: !activoActual })
+  });
+  cargarTips();
+}
+
+async function eliminarTip(id) {
+  if (!confirm('¿Eliminar este tip?')) return;
+  await fetch(`${GAL_URL}/rest/v1/noticias_web?id=eq.${id}`, { method: 'DELETE', headers: galHeaders });
+  showToast('🗑️ Tip eliminado');
+  cargarTips();
 }
 </script>
 </body>
