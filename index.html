@@ -70,10 +70,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   .hero{position:relative;height:100vh;min-height:600px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
   .hero-bg{position:absolute;inset:0;background-image:url("banner.jpg");background-size:cover;background-position:center;animation:slowZoom 20s ease-in-out infinite alternate;}
-  @keyframes slowZoom{from{transform:scale(1.0)}to{transform:scale(1.08)}}
+  @keyframes slowZoom{from{transform:scale(1.0) translate(var(--px,0px),var(--py,0px))}to{transform:scale(1.08) translate(var(--px,0px),var(--py,0px))}}
   .hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(26,74,26,0.65) 0%,rgba(0,0,0,0.15) 100%);}
   .hero-content{position:relative;z-index:2;text-align:center;color:white;animation:fadeUp 1.2s ease forwards;}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(40px) translate(var(--hx,0px),var(--hy,0px))}to{opacity:1;transform:translateY(0) translate(var(--hx,0px),var(--hy,0px))}}
   .patria-badge{display:inline-flex;align-items:center;gap:10px;padding:9px 22px;margin-bottom:22px;background:rgba(255,255,255,0.10);backdrop-filter:blur(6px);border:1px solid rgba(200,168,75,0.6);border-radius:999px;animation:fadeUp 1.4s ease forwards;}
   .patria-badge svg{width:26px;height:auto;flex-shrink:0;border-radius:2px;box-shadow:0 1px 4px rgba(0,0,0,0.4);}
   .patria-badge span{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);text-shadow:1px 1px 6px rgba(0,0,0,0.5);}
@@ -96,8 +96,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   #testimonios{background:var(--gray-light);}
   #testimonios .inner{max-width:1100px;margin:0 auto;}
   .test-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:40px;}
-  .test-card{background:white;border:1px solid var(--green-pale);border-radius:12px;padding:28px;transition:transform 0.3s;}
-  .test-card:hover{transform:translateY(-4px);}
+  .test-card{background:white;border:1px solid var(--green-pale);border-radius:12px;padding:28px;transition:transform 0.4s cubic-bezier(.22,1,.36,1),box-shadow 0.4s cubic-bezier(.22,1,.36,1),border-color 0.4s ease;}
+  .test-card:hover{transform:translateY(-8px) scale(1.015);box-shadow:0 20px 40px rgba(45,122,45,0.16);border-color:var(--gold);}
   .test-stars{color:var(--gold);font-size:15px;margin-bottom:12px;letter-spacing:2px;}
   .test-text{font-size:0.95rem;color:#555;line-height:1.8;margin-bottom:20px;font-style:italic;}
   .test-author{display:flex;align-items:center;gap:12px;}
@@ -112,14 +112,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   #compra{background:var(--white);}
   #compra .inner{max-width:1100px;margin:0 auto;}
   .variedades-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px;margin:40px 0;}
-  .variedad-card{background:var(--green-pale);border:2px solid var(--green-light);border-radius:8px;padding:24px 16px;text-align:center;transition:all 0.3s;}
-  .variedad-card:hover{background:var(--green-dark);border-color:var(--gold);transform:translateY(-4px);}
-  .variedad-icon{font-size:2rem;margin-bottom:10px;display:block;}
+  .variedad-card{background:var(--green-pale);border:2px solid var(--green-light);border-radius:8px;padding:24px 16px;text-align:center;transition:background 0.4s ease,border-color 0.4s ease,transform 0.4s cubic-bezier(.22,1,.36,1),box-shadow 0.4s cubic-bezier(.22,1,.36,1);}
+  .variedad-card:hover{background:var(--green-dark);border-color:var(--gold);transform:translateY(-6px) scale(1.04);box-shadow:0 16px 32px rgba(26,74,26,0.25);}
+  .variedad-icon{font-size:2rem;margin-bottom:10px;display:block;transition:transform 0.4s cubic-bezier(.22,1,.36,1);}
+  .variedad-card:hover .variedad-icon{transform:scale(1.2) rotate(-6deg);}
   .variedad-nombre{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:var(--green-dark);letter-spacing:1px;}
   .variedad-card:hover .variedad-nombre{color:white;}
   .proceso-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;margin-top:48px;}
-  .paso{text-align:center;padding:24px;}
-  .paso-num{width:52px;height:52px;border-radius:50%;background:var(--gold);color:var(--green-dark);font-weight:900;font-size:1.3rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+  .paso{text-align:center;padding:24px;transition:transform 0.4s cubic-bezier(.22,1,.36,1);}
+  .paso:hover{transform:translateY(-6px);}
+  .paso-num{width:52px;height:52px;border-radius:50%;background:var(--gold);color:var(--green-dark);font-weight:900;font-size:1.3rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;transition:transform 0.4s cubic-bezier(.22,1,.36,1),box-shadow 0.4s ease;}
+  .paso:hover .paso-num{transform:scale(1.15);box-shadow:0 8px 20px rgba(200,168,75,0.5);}
   .paso h4{font-family:"Playfair Display",serif;font-size:1.1rem;color:var(--green-dark);margin-bottom:8px;}
   .paso p{font-size:0.9rem;color:#666;line-height:1.7;}
   #calculadora{background:var(--green-dark);}
@@ -169,8 +172,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   #noticias{background:white;}
   #noticias .inner{max-width:1100px;margin:0 auto;}
   .news-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:40px;}
-  .news-card{background:var(--gray-light);border-radius:12px;overflow:hidden;border:1px solid var(--green-pale);transition:all 0.3s;}
-  .news-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(45,122,45,0.12);}
+  .news-card{background:var(--gray-light);border-radius:12px;overflow:hidden;border:1px solid var(--green-pale);transition:transform 0.4s cubic-bezier(.22,1,.36,1),box-shadow 0.4s cubic-bezier(.22,1,.36,1),border-color 0.4s ease;}
+  .news-card:hover{transform:translateY(-8px) scale(1.015);box-shadow:0 20px 40px rgba(45,122,45,0.18);}
   .news-card.clickable{cursor:pointer;}
   .news-card.clickable:hover{border-color:var(--green-light);}
   .news-readmore{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--green-main);margin-top:10px;display:inline-flex;align-items:center;gap:4px;}
@@ -217,8 +220,27 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   footer p{font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:0.6;margin-top:8px;}
 
   /* SCROLL REVEAL */
-  .reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease;}
+  .reveal{opacity:0;transform:translateY(34px);transition:opacity 0.8s cubic-bezier(.22,1,.36,1),transform 0.8s cubic-bezier(.22,1,.36,1);}
   .reveal.visible{opacity:1;transform:translateY(0);}
+  /* Cascada: cuando varias tarjetas .reveal viven dentro de un mismo contenedor .stagger-group,
+     cada una entra con un pequeño retraso extra para crear el efecto de aparición en cadena. */
+  .stagger-group .reveal:nth-child(1){transition-delay:0s;}
+  .stagger-group .reveal:nth-child(2){transition-delay:.09s;}
+  .stagger-group .reveal:nth-child(3){transition-delay:.18s;}
+  .stagger-group .reveal:nth-child(4){transition-delay:.27s;}
+  .stagger-group .reveal:nth-child(5){transition-delay:.36s;}
+  .stagger-group .reveal:nth-child(6){transition-delay:.45s;}
+  .stagger-group .reveal:nth-child(7){transition-delay:.54s;}
+  .stagger-group .reveal:nth-child(n+8){transition-delay:.6s;}
+
+  /* BARRA DE PROGRESO DE SCROLL */
+  .scroll-progress{position:fixed;top:6px;left:0;height:3px;width:0%;background:linear-gradient(90deg,var(--gold),var(--green-light));z-index:102;transition:width 0.1s linear;box-shadow:0 0 8px rgba(200,168,75,0.6);}
+
+  /* NAV al hacer scroll */
+  nav.scrolled{height:60px;background:rgba(15,46,15,0.98);box-shadow:0 6px 24px rgba(0,0,0,0.25);}
+  nav{transition:height 0.35s cubic-bezier(.22,1,.36,1),background 0.35s ease,box-shadow 0.35s ease;}
+  nav.scrolled .nav-logo{height:44px;}
+  .nav-logo{transition:height 0.35s cubic-bezier(.22,1,.36,1);}
 
   @media(max-width:768px){
     nav{padding:0 16px;}
@@ -279,8 +301,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KDJN27Q9" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="patria-ribbon" aria-hidden="true"></div>
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
-<nav>
+<nav id="mainNav">
   <img class="nav-logo" src="logo.png" alt="AGROVERDE AGV">
   <button class="nav-toggle" id="navToggle" onclick="toggleNav()" aria-label="Abrir menu" aria-expanded="false">
     <span></span><span></span><span></span>
@@ -370,7 +393,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <p class="section-label">Lo que dicen</p>
     <h2 class="section-title">Productores que confian en AGV</h2>
     <div class="section-divider"></div>
-    <div class="test-grid">
+    <div class="test-grid stagger-group">
       <div class="test-card reveal">
         <div class="test-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
         <p class="test-text">"Con AGROVERDE el proceso es rapido y transparente. Vienen hasta mi finca, pesan, y me pagan el mismo dia. Sin complicaciones."</p>
@@ -428,20 +451,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <h2 class="section-title">Compra de arroz</h2>
     <div class="section-divider"></div>
     <p style="color:#555;font-size:1.05rem;line-height:1.9;max-width:800px;">En AGROVERDE vamos directo al campo a comprar tu arroz — no tienes que trasladarte a ningun lugar. Nuestro equipo llega hasta tu finca con un proceso transparente, justo y agil. Trabajamos con las principales variedades del mercado dominicano.</p>
-    <div class="variedades-grid reveal">
-      <div class="variedad-card"><span class="variedad-icon">&#127806;</span><div class="variedad-nombre">Lucero</div></div>
-      <div class="variedad-card"><span class="variedad-icon">&#127806;</span><div class="variedad-nombre">Guri</div></div>
-      <div class="variedad-card"><span class="variedad-icon">&#127806;</span><div class="variedad-nombre">Jaragua</div></div>
-      <div class="variedad-card"><span class="variedad-icon">&#127806;</span><div class="variedad-nombre">Quisquella</div></div>
-      <div class="variedad-card"><span class="variedad-icon">&#127806;</span><div class="variedad-nombre">Robusta</div></div>
-      <div class="variedad-card"><span class="variedad-icon">&#127806;</span><div class="variedad-nombre">Torazo</div></div>
-      <div class="variedad-card"><span class="variedad-icon">&#127806;</span><div class="variedad-nombre">Entre otras</div></div>
+    <div class="variedades-grid stagger-group">
+      <div class="variedad-card reveal"><span class="variedad-icon">&#127806;</span><div class="variedad-nombre">Lucero</div></div>
+      <div class="variedad-card reveal"><span class="variedad-icon">&#127806;</span><div class="variedad-nombre">Guri</div></div>
+      <div class="variedad-card reveal"><span class="variedad-icon">&#127806;</span><div class="variedad-nombre">Jaragua</div></div>
+      <div class="variedad-card reveal"><span class="variedad-icon">&#127806;</span><div class="variedad-nombre">Quisquella</div></div>
+      <div class="variedad-card reveal"><span class="variedad-icon">&#127806;</span><div class="variedad-nombre">Robusta</div></div>
+      <div class="variedad-card reveal"><span class="variedad-icon">&#127806;</span><div class="variedad-nombre">Torazo</div></div>
+      <div class="variedad-card reveal"><span class="variedad-icon">&#127806;</span><div class="variedad-nombre">Entre otras</div></div>
     </div>
-    <div class="proceso-steps reveal">
-      <div class="paso"><div class="paso-num">1</div><h4>Visita al campo</h4><p>Nuestro equipo se traslada directamente a tu finca para atender tu cosecha, sin que tengas que moverte de tu terreno.</p></div>
-      <div class="paso"><div class="paso-num">2</div><h4>Pesaje</h4><p>Se realiza el pesaje en el campo con báscula certificada para determinar los kilos netos.</p></div>
-      <div class="paso"><div class="paso-num">3</div><h4>Humedad</h4><p>Se mide el porcentaje de humedad del arroz para calcular las fanegas correctas.</p></div>
-      <div class="paso"><div class="paso-num">4</div><h4>Liquidacion</h4><p>Se calcula el valor de la factura y se realiza el pago al productor de forma transparente, ahi mismo en su finca.</p></div>
+    <div class="proceso-steps stagger-group">
+      <div class="paso reveal"><div class="paso-num">1</div><h4>Visita al campo</h4><p>Nuestro equipo se traslada directamente a tu finca para atender tu cosecha, sin que tengas que moverte de tu terreno.</p></div>
+      <div class="paso reveal"><div class="paso-num">2</div><h4>Pesaje</h4><p>Se realiza el pesaje en el campo con báscula certificada para determinar los kilos netos.</p></div>
+      <div class="paso reveal"><div class="paso-num">3</div><h4>Humedad</h4><p>Se mide el porcentaje de humedad del arroz para calcular las fanegas correctas.</p></div>
+      <div class="paso reveal"><div class="paso-num">4</div><h4>Liquidacion</h4><p>Se calcula el valor de la factura y se realiza el pago al productor de forma transparente, ahi mismo en su finca.</p></div>
     </div>
   </div>
 </section>
@@ -492,7 +515,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <h2 class="section-title">Informacion para el productor</h2>
     <div class="section-divider"></div>
     <p style="color:#666;font-size:1.05rem;line-height:1.9;">Guias tecnicas y recomendaciones del equipo de AGROVERDE para maximizar tu cosecha.</p>
-    <div class="news-grid" id="news-grid">
+    <div class="news-grid stagger-group" id="news-grid">
       <div style="text-align:center;padding:40px;color:#aaa;grid-column:1/-1;">Cargando...</div>
     </div>
   </div>
@@ -574,6 +597,50 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </footer>
 
 <script>
+// PARALLAX SUTIL EN EL HERO (solo escritorio, con el mouse)
+// Usa variables CSS (--px/--py/--hx/--hy) para no pisar las animaciones de zoom y fadeUp ya existentes.
+(function(){
+  var heroBg = document.querySelector('.hero-bg');
+  var heroContent = document.querySelector('.hero-content');
+  var hero = document.querySelector('.hero');
+  if (!heroBg || !heroContent || !hero || window.matchMedia('(max-width: 768px)').matches) return;
+  var ticking = false, lastX = 0, lastY = 0;
+  function apply(){
+    heroBg.style.setProperty('--px', (lastX * -16) + 'px');
+    heroBg.style.setProperty('--py', (lastY * -16) + 'px');
+    heroContent.style.setProperty('--hx', (lastX * 12) + 'px');
+    heroContent.style.setProperty('--hy', (lastY * 8) + 'px');
+    ticking = false;
+  }
+  hero.addEventListener('mousemove', function(e){
+    var rect = hero.getBoundingClientRect();
+    lastX = (e.clientX - rect.left) / rect.width - 0.5;
+    lastY = (e.clientY - rect.top) / rect.height - 0.5;
+    if (!ticking) { requestAnimationFrame(apply); ticking = true; }
+  });
+  hero.addEventListener('mouseleave', function(){
+    lastX = 0; lastY = 0;
+    requestAnimationFrame(apply);
+  });
+})();
+
+// SCROLL: nav dinámico + barra de progreso
+(function(){
+  var nav = document.getElementById('mainNav');
+  var bar = document.getElementById('scrollProgress');
+  function onScroll(){
+    var y = window.scrollY || document.documentElement.scrollTop;
+    if(nav) nav.classList.toggle('scrolled', y > 60);
+    if(bar){
+      var h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var pct = h > 0 ? (y / h) * 100 : 0;
+      bar.style.width = pct + '%';
+    }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+
 // MENU MOVIL
 function toggleNav(){var menu=document.getElementById('navMenu');var btn=document.getElementById('navToggle');var isOpen=menu.classList.toggle('open');btn.classList.toggle('open',isOpen);btn.setAttribute('aria-expanded',isOpen);}
 function closeNav(){var menu=document.getElementById('navMenu');var btn=document.getElementById('navToggle');menu.classList.remove('open');btn.classList.remove('open');btn.setAttribute('aria-expanded',false);}
@@ -644,16 +711,23 @@ function enviarWhatsApp(){
   window.open('https://wa.me/18094899215?text='+encodeURIComponent(texto),'_blank');
 }
 
-// ESTADISTICAS ANIMADAS
+// ESTADISTICAS ANIMADAS (con easing tipo "ease-out" para que desacelere igual que en apps premium)
 function animarContador(id, target, suffix) {
-  var start = 0;
   var el = document.getElementById(id);
-  var step = target / 60;
-  var timer = setInterval(function() {
-    start = Math.min(start + step, target);
-    el.textContent = Math.floor(start).toLocaleString() + (suffix || '');
-    if (start >= target) clearInterval(timer);
-  }, 25);
+  if (!el) return;
+  var duration = 1600;
+  var startTime = null;
+  function easeOutExpo(t){ return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
+  function frame(ts){
+    if (!startTime) startTime = ts;
+    var progress = Math.min((ts - startTime) / duration, 1);
+    var eased = easeOutExpo(progress);
+    var current = Math.floor(eased * target);
+    el.textContent = current.toLocaleString() + (suffix || '');
+    if (progress < 1) requestAnimationFrame(frame);
+    else el.textContent = target.toLocaleString() + (suffix || '');
+  }
+  requestAnimationFrame(frame);
 }
 window.addEventListener('load', function() {
   cargarEstadisticas();
